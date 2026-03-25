@@ -243,7 +243,7 @@ const ANTI_PROCRASTINATION_TIPS = [
 
 /* ========== 音效 ========== */
 let globalAudioCtx = null;
-const initAudio = () => { try { if(!globalAudioCtx){ const A=window.AudioContext||window.webkitAudioContext; if(A) globalAudioCtx=new A(); } if(globalAudioCtx?.state===‘suspended’) globalAudioCtx.resume(); } catch(e){} };
+const initAudio = () => { try { if(!globalAudioCtx){ const A=window.AudioContext||window.webkitAudioContext; if(A) globalAudioCtx=new A(); } if((globalAudioCtx&&globalAudioCtx.state)===‘suspended’) globalAudioCtx.resume(); } catch(e){} };
 
 const playSound = (type=‘alarm’) => {
 if(!globalAudioCtx) return;
@@ -268,7 +268,7 @@ else if(type===‘breathe’){ t(396,now,0.6,0.15); }
 
 /* ========== 環境音生成 ========== */
 let ambientNodes = [];
-const stopAmbient = () => { ambientNodes.forEach(n=>{try{n.stop?.();n.disconnect?.();}catch(e){}}); if(ambientNodes._timer) clearTimeout(ambientNodes._timer); ambientNodes=[]; };
+const stopAmbient = () => { ambientNodes.forEach(n=>{try{n.stop&&n.stop();n.disconnect&&n.disconnect();}catch(e){}}); if(ambientNodes._timer) clearTimeout(ambientNodes._timer); ambientNodes=[]; };
 const playAmbient = (id) => {
 stopAmbient(); if(!globalAudioCtx||id===‘none’) return;
 try {
@@ -464,7 +464,7 @@ const EnergyPicker=({value,onChange})=>(<div style={{display:“flex”,gap:8,al
 const RoutineFields=({draft,setDraft})=>{
 const toggleWD=day=>{const cur=draft.weekdays||[];setDraft(d=>({…d,weekdays:cur.includes(day)?cur.filter(x=>x!==day):[…cur,day]}));};
 const toggleMD=day=>{const cur=draft.monthdays||[];setDraft(d=>({…d,monthdays:(cur.includes(day)?cur.filter(x=>x!==day):[…cur,day]).sort((a,b)=>a-b)}));};
-const changePeriod=p=>setDraft(d=>({…d,period:p,weekdays:p===“weekly”?(d.weekdays?.length?d.weekdays:[“週一”]):[],monthdays:p===“monthly”?(d.monthdays?.length?d.monthdays:[1]):[],month:p===“yearly”?(d.month||“1月”):null}));
+const changePeriod=p=>setDraft(d=>({…d,period:p,weekdays:p===“weekly”?((d.weekdays&&d.weekdays.length)?d.weekdays:[“週一”]):[],monthdays:p===“monthly”?((d.monthdays&&d.monthdays.length)?d.monthdays:[1]):[],month:p===“yearly”?(d.month||“1月”):null}));
 return(<div>
 <div style={{marginBottom:10}}><div style={{fontSize:12,color:P.sub,marginBottom:6}}>圖示</div>
 <div style={{display:“flex”,flexWrap:“wrap”,gap:5}}>{ICONS.map(ic=>(<button key={ic} onClick={()=>setDraft(d=>({…d,icon:ic}))} style={{…st.btn,padding:“5px 9px”,fontSize:15,background:draft.icon===ic?P.accent:P.card,color:draft.icon===ic?”#fff”:P.text,border:`1px solid ${draft.icon===ic?P.accent:P.border}`}}>{ic}</button>))}</div></div>
@@ -489,8 +489,8 @@ if(phase===“done”)return;
 if(secondsLeft<=0){
 if(phase===“in”){if(pattern.holdSec>0){setPhase(“hold”);setSecondsLeft(pattern.holdSec);}else{setPhase(“out”);setSecondsLeft(pattern.outSec);}}
 else if(phase===“hold”){setPhase(“out”);setSecondsLeft(pattern.outSec);}
-else if(phase===“out”){if(pattern.hold2Sec>0){setPhase(“hold2”);setSecondsLeft(pattern.hold2Sec);}else{const next=cycleCount+1;if(next>=pattern.cycles){setPhase(“done”);playSound(‘complete’);onComplete?.();}else{setCycleCount(next);setPhase(“in”);setSecondsLeft(pattern.inSec);}}}
-else if(phase===“hold2”){const next=cycleCount+1;if(next>=pattern.cycles){setPhase(“done”);playSound(‘complete’);onComplete?.();}else{setCycleCount(next);setPhase(“in”);setSecondsLeft(pattern.inSec);}}
+else if(phase===“out”){if(pattern.hold2Sec>0){setPhase(“hold2”);setSecondsLeft(pattern.hold2Sec);}else{const next=cycleCount+1;if(next>=pattern.cycles){setPhase(“done”);playSound(‘complete’);onComplete&&onComplete();}else{setCycleCount(next);setPhase(“in”);setSecondsLeft(pattern.inSec);}}}
+else if(phase===“hold2”){const next=cycleCount+1;if(next>=pattern.cycles){setPhase(“done”);playSound(‘complete’);onComplete&&onComplete();}else{setCycleCount(next);setPhase(“in”);setSecondsLeft(pattern.inSec);}}
 return;}
 const t=setTimeout(()=>setSecondsLeft(s=>s-1),1000);return()=>clearTimeout(t);
 },[phase,secondsLeft]);
@@ -617,7 +617,7 @@ return(
 style={{…st.btn,background:preset.color,color:”#fff”,width:“100%”,padding:“18px”,fontSize:18,fontWeight:700,borderRadius:16,animation:“urgentPulse 2s ease-in-out infinite”}}>
 好，我現在就去 →
 </button>
-{!snoozed&&<button onClick={()=>{setSnoozed(true);onSnooze?.();}}
+{!snoozed&&<button onClick={()=>{setSnoozed(true);onSnooze&&onSnooze();}}
 style={{…st.btn,background:“transparent”,color:P.sub,width:“100%”,padding:“12px”,fontSize:14,border:`1px solid ${P.border}`,borderRadius:14}}>
 再給我 10 分鐘…
 </button>}
@@ -782,10 +782,10 @@ const item=data.pendingItems.find(p=>p.id===id);initAudio();playSound(‘complet
 setPetHeart(true);setTimeout(()=>setPetHeart(false),1200);
 const today=todayStr(),hist={…data.completedHistory};hist[today]=(hist[today]||0)+1;
 const newTotal=(data.totalCompleted||0)+1;
-const newCT=[…data.completedToday,{text:item?.text,time:new Date().toLocaleTimeString(“zh-TW”,{hour:“2-digit”,minute:“2-digit”})}];
+const newCT=[…data.completedToday,{text:(item&&item.text),time:new Date().toLocaleTimeString(“zh-TW”,{hour:“2-digit”,minute:“2-digit”})}];
 const todayCount=newCT.length;
 const milestone=MILESTONES.find(m=>m.count===todayCount);
-const routines=item?.fromRoutine?data.routines.map(r=>r.id===item.fromRoutine?{…r,lastDone:today}:r):data.routines;
+const routines=(item&&item.fromRoutine)?data.routines.map(r=>r.id===item.fromRoutine?{…r,lastDone:today}:r):data.routines;
 const base={pendingItems:data.pendingItems.filter(p=>p.id!==id),completedToday:newCT,completedHistory:hist,totalCompleted:newTotal,petTreats:(data.petTreats||0)+1,petHappiness:Math.min(100,(data.petHappiness||50)+3),petLastFed:today,routines};
 if(milestone&&!(data.milestoneSeen||[]).includes(`${today}_${todayCount}`)){
 setTimeout(()=>{playSound(‘milestone’);setActiveMilestone(milestone);},900);
@@ -849,11 +849,11 @@ const focusAddStep=()=>setFocusDraft({…focusDraft,steps:[…focusDraft.steps,{
 const focusRemoveStep=idx=>{const steps=[…focusDraft.steps];steps.splice(idx,1);setFocusDraft({…focusDraft,steps});};
 const focusUpdateStepTime=(idx,type,value)=>{const steps=[…focusDraft.steps];const total=steps[idx].duration||0;const cM=Math.floor(total/60),cS=total%60;let v=parseInt(value)||0;if(v<0)v=0;
 if(type===‘min’)steps[idx].duration=v*60+cS;else if(type===‘sec’){if(v>59)v=59;steps[idx].duration=cM*60+v;}else if(type===‘text’)steps[idx].text=value;setFocusDraft({…focusDraft,steps});};
-const getFocusTotalTime=()=>focusDraft?.steps.reduce((s,x)=>s+(parseInt(x.duration)||0),0)||0;
+const getFocusTotalTime=()=>((focusDraft&&focusDraft.steps)||[]).reduce((s,x)=>s+(parseInt(x.duration)||0),0)||0;
 
 const timeStr=now.toLocaleTimeString(“zh-TW”,{hour:“2-digit”,minute:“2-digit”});
 const dateStr=now.toLocaleDateString(“zh-TW”,{month:“long”,day:“numeric”,weekday:“long”});
-const completedCount=data.completedToday?.length||0;
+const completedCount=(data.completedToday||[]).length||0;
 const streak=useMemo(()=>calcStreak(data.completedHistory||{}),[data.completedHistory]);
 const last7=useMemo(()=>getLast7Days(data.completedHistory||{}),[data.completedHistory]);
 const maxLast7=Math.max(…last7.map(d=>d.count),1);
@@ -871,7 +871,7 @@ if(activeBodyDouble)return<BodyDoubleTimer minutes={activeBodyDouble} onClose={(
 if(timerCountdown)return(<div style={{…st.app,display:‘flex’,flexDirection:‘column’,alignItems:‘center’,justifyContent:‘center’,background:`linear-gradient(160deg,${P.warmGlow} 0%,${P.bg} 100%)`}}>
 <div style={{fontSize:14,color:P.sub,marginBottom:24,fontWeight:500}}>{timerCountdown.template.title}</div>
 <div style={{fontSize:120,fontWeight:900,color:P.accent,fontFamily:”‘Noto Serif TC’, serif”,animation:“countdownPulse 1s ease-in-out infinite”,lineHeight:1}}>{timerCountdown.count}</div>
-<div style={{fontSize:16,color:P.sub,marginTop:24}}>準備好了嗎？第一步：{timerCountdown.template.steps[0]?.text}</div>
+<div style={{fontSize:16,color:P.sub,marginTop:24}}>準備好了嗎？第一步：{timerCountdown.template.steps[0]&&timerCountdown.template.steps[0].text}</div>
 <div style={{fontSize:13,color:P.sub,marginTop:8,opacity:0.7}}>共 {timerCountdown.template.steps.length} 步驟</div></div>);
 
 if(activeTimer){
@@ -981,7 +981,7 @@ return(<div style={st.app}>
       style={{...st.btn,background:P.warmGlow,color:P.orange,padding:"5px 12px",fontSize:12,fontWeight:600,border:`1px solid ${P.orange}30`}}>💡 給我一招</button></div>
     <div style={st.sB}>
       {antiProcTip&&<div style={{background:`${P.orange}10`,border:`1px solid ${P.orange}30`,borderRadius:12,padding:"12px 14px",marginBottom:12,fontSize:14,color:P.orange,lineHeight:1.5,animation:"fadeIn 0.3s ease-out"}}>{antiProcTip}</div>}
-      <button onClick={()=>{initAudio();setActiveFiveMin({task:sortedPending[0]?.text||""});}}
+      <button onClick={()=>{initAudio();setActiveFiveMin({task:(sortedPending[0]&&sortedPending[0].text)||""});}}
         style={{...st.btn,width:"100%",background:`linear-gradient(135deg,${P.accent},${P.accentLight})`,color:"#fff",padding:"16px",fontSize:16,fontWeight:700,borderRadius:14,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
         ⏱️ 五分鐘啟動法 — 只做 5 分鐘就好
       </button>
@@ -1023,7 +1023,7 @@ return(<div style={st.app}>
         </button></div>}
     </div></div>
 
-  {data.completedToday?.length>0&&<div style={st.sec}><div style={st.sH}><span style={st.sT}>✅ 今日已完成</span><span style={{fontSize:13,color:P.green,fontWeight:700}}>{data.completedToday.length} 件</span></div>
+  {(data.completedToday||[]).length>0&&<div style={st.sec}><div style={st.sH}><span style={st.sT}>✅ 今日已完成</span><span style={{fontSize:13,color:P.green,fontWeight:700}}>{data.completedToday.length} 件</span></div>
     <div style={st.sB}>{data.completedToday.map((c,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderTop:i>0?`1px solid ${P.border}`:"none",opacity:0.75}}><span style={{color:P.green,fontSize:16}}>✓</span><span style={{flex:1,fontSize:14,textDecoration:"line-through",color:P.sub}}>{c.text}</span><span style={{fontSize:12,color:P.sub}}>{c.time}</span></div>))}</div></div>}
 
   <div style={{margin:"20px 14px 0"}}><button onClick={()=>{if(window.confirm("確定要清空暫放區？"))upd({pendingItems:[],anchor:""});}} style={{...st.btn,background:P.tag,color:P.sub,width:"100%",padding:"12px",fontSize:13}}>🧹 清空暫放區，重新開始</button></div>
@@ -1045,13 +1045,13 @@ return(<div style={st.app}>
     <div style={st.sB}>
       <div style={{color:P.sub,fontSize:13,marginBottom:10}}>對抗完美主義！時間到會強制響鈴換下一步。</div>
       <div style={{marginBottom:16}}><EnergyPicker value={data.todayEnergy} onChange={v=>upd({todayEnergy:v})}/>
-        {data.todayEnergy<3&&<div style={{fontSize:12,color:P.sub,marginTop:8,background:P.tag,padding:"8px 12px",borderRadius:8}}>💡 依你目前的電量，建議先試標示「{ENERGY_LEVELS.find(e=>e.value===data.todayEnergy)?.emoji}」以下的模板</div>}</div>
+        {data.todayEnergy<3&&<div style={{fontSize:12,color:P.sub,marginTop:8,background:P.tag,padding:"8px 12px",borderRadius:8}}>💡 依你目前的電量，建議先試標示「{(ENERGY_LEVELS.find(e=>e.value===data.todayEnergy)||{}).emoji}」以下的模板</div>}</div>
       <div style={{display:"flex",flexDirection:"column",gap:12}}>
         {data.focusTemplates.map(tpl=>{const isR=(tpl.energyLevel||2)<=data.todayEnergy;return(
           <div key={tpl.id} style={{display:"flex",gap:10,alignItems:"stretch",opacity:isR?1:0.5,transition:"opacity 0.3s"}}>
             <div style={{flex:1,border:`2px solid ${isR?P.accent+'40':P.border}`,borderRadius:14,padding:16,display:"flex",gap:14,background:P.card}}>
               <div style={{fontSize:32,display:"flex",alignItems:"center"}}>{tpl.icon}</div>
-              <div><div style={{fontWeight:700,fontSize:16,marginBottom:4,color:P.accent,display:"flex",alignItems:"center",gap:6}}>{tpl.title}<span style={{fontSize:11,background:P.tag,padding:"2px 8px",borderRadius:10,color:P.sub}}>{ENERGY_LEVELS.find(e=>e.value===(tpl.energyLevel||2))?.emoji}</span></div>
+              <div><div style={{fontWeight:700,fontSize:16,marginBottom:4,color:P.accent,display:"flex",alignItems:"center",gap:6}}>{tpl.title}<span style={{fontSize:11,background:P.tag,padding:"2px 8px",borderRadius:10,color:P.sub}}>{(ENERGY_LEVELS.find(e=>e.value===(tpl.energyLevel||2))||{}).emoji}</span></div>
                 <div style={{color:P.sub,fontSize:13,lineHeight:1.4}}>{tpl.desc}</div></div></div>
             <div style={{display:"flex",flexDirection:"column",gap:6,width:48}}>
               <button onClick={()=>startFocusTimer(tpl)} style={{flex:1.5,background:isR?P.accent:P.tag,color:isR?"white":P.sub,border:"none",borderRadius:10,fontSize:20,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>▶</button>
@@ -1101,7 +1101,7 @@ return(<div style={st.app}>
         <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>{["😊","😌","😐","😤","😢","😴","🥳","😰"].map(em=>(<button key={em} onClick={()=>setMoodEmoji(em)} style={{...st.btn,padding:"8px 12px",fontSize:22,background:moodEmoji===em?P.accent:P.card,borderRadius:12,border:`2px solid ${moodEmoji===em?P.accent:"transparent"}`}}>{em}</button>))}</div>
         <textarea style={{...st.inp,height:60,resize:"none",marginBottom:10}} placeholder="想說什麼？（選填）" value={moodNote} onChange={e=>setMoodNote(e.target.value)}/>
         <button onClick={saveMoodLog} style={{...st.btn,background:P.accent,color:"#fff",width:"100%",fontWeight:700}}>儲存心情</button></div>}
-      {data.moodLog.slice(-5).reverse().map((entry,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderTop:i>0?`1px solid ${P.border}`:"none"}}><span style={{fontSize:24}}>{entry.mood}</span><div style={{flex:1}}>{entry.note&&<div style={{fontSize:13,color:P.text}}>{entry.note}</div>}<div style={{fontSize:11,color:P.sub}}>{entry.date} {entry.time} · {ENERGY_LEVELS.find(e=>e.value===entry.energy)?.emoji}</div></div></div>))}
+      {data.moodLog.slice(-5).reverse().map((entry,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderTop:i>0?`1px solid ${P.border}`:"none"}}><span style={{fontSize:24}}>{entry.mood}</span><div style={{flex:1}}>{entry.note&&<div style={{fontSize:13,color:P.text}}>{entry.note}</div>}<div style={{fontSize:11,color:P.sub}}>{entry.date} {entry.time} · {(ENERGY_LEVELS.find(e=>e.value===entry.energy)||{}).emoji}</div></div></div>))}
       {data.moodLog.length===0&&!showMoodForm&&<div style={{textAlign:"center",padding:"16px 0",color:P.sub,fontSize:13}}>還沒有記錄，試試看記下現在的心情吧！</div>}
     </div></div>
 </div>}
@@ -1114,7 +1114,7 @@ return(<div style={st.app}>
 
     {(()=>{const todayRoutines=getRoutinesForToday(data.routines);if(todayRoutines.length===0)return null;return(
       <div style={{marginBottom:20}}><div style={{fontSize:12,color:P.green,fontWeight:700,marginBottom:10,letterSpacing:1,display:"flex",alignItems:"center",gap:6}}><span style={{width:8,height:8,borderRadius:4,background:P.green,display:"inline-block"}}/>今日應做</div>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>{todayRoutines.map(r=>{const inP=data.pendingItems.some(p=>p.fromRoutine===r.id||p.text===r.label);const done=data.completedToday?.some(c=>c.text===r.label);return(
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>{todayRoutines.map(r=>{const inP=data.pendingItems.some(p=>p.fromRoutine===r.id||p.text===r.label);const done=(data.completedToday||[]).some(c=>c.text===r.label);return(
           <button key={r.id} onClick={()=>{if(!inP&&!done)addPending(r.label,"medium");}} style={{...st.btn,display:"flex",alignItems:"center",gap:10,padding:"12px 16px",fontSize:14,justifyContent:"flex-start",textAlign:"left",background:done?P.green:inP?P.tag:P.card,color:done?"#fff":P.text,border:`1px solid ${done?P.green:inP?P.accent:P.border}`,opacity:done?0.7:1}}>
             <span style={{fontSize:20}}>{r.icon}</span><div><div style={{fontWeight:600}}>{r.label}</div>{r.lastDone&&<div style={{fontSize:11,color:done?"rgba(255,255,255,0.7)":P.sub,marginTop:2}}>上次：{r.lastDone}</div>}</div>
             {done&&<span style={{marginLeft:"auto",fontSize:14}}>✓</span>}{inP&&!done&&<span style={{marginLeft:"auto",fontSize:12,color:P.accent}}>已排入</span>}</button>);})}</div></div>);})()}
