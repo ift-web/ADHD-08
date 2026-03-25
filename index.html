@@ -1,0 +1,1220 @@
+<!DOCTYPE html><html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="ADHD 管理">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%235a4a3a%22 rx=%2220%22/><text x=%2250%22 y=%2268%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22white%22>⭐</text></svg>">
+  <title>ADHD 日常管理工具</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; padding: 0; background-color: #f5f1eb; -webkit-tap-highlight-color: transparent; font-family: 'Noto Sans TC', sans-serif; }
+    ::-webkit-scrollbar { display: none; }
+    html { scroll-behavior: smooth; }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 50% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes confettiBurst { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-60px) scale(0.5); } }
+@keyframes countdownPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+@keyframes gentleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@keyframes breatheIn { 0% { transform: scale(0.6); opacity: 0.4; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes breatheOut { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0.6); opacity: 0.4; } }
+@keyframes breatheHold { 0%, 100% { transform: scale(1); opacity: 1; } }
+@keyframes starPop { 0% { transform: scale(0) rotate(-30deg); opacity: 0; } 60% { transform: scale(1.3) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+@keyframes barGrow { from { width: 0%; } }
+@keyframes sakuraFall { 0% { opacity:1; transform: translateY(0) rotate(0deg) scale(1); } 50% { opacity:0.8; transform: translateY(-30px) rotate(180deg) scale(0.8) translateX(30px); } 100% { opacity:0; transform: translateY(-80px) rotate(360deg) scale(0.3) translateX(-20px); } }
+@keyframes sakuraFallAlt { 0% { opacity:1; transform: translateY(0) rotate(0deg) scale(1); } 50% { opacity:0.7; transform: translateY(-40px) rotate(-120deg) scale(0.7) translateX(-30px); } 100% { opacity:0; transform: translateY(-90px) rotate(-300deg) scale(0.2) translateX(20px); } }
+@keyframes catIdle { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes catEat { 0%,100% { transform: scale(1); } 30% { transform: scale(1.2) translateY(-4px); } 60% { transform: scale(0.95); } }
+@keyframes heartBubble { 0% { opacity:1; transform: translateY(0) scale(0.5); } 50% { opacity:1; transform: translateY(-15px) scale(1); } 100% { opacity:0; transform: translateY(-30px) scale(0.8); } }
+@keyframes treatFloat { 0% { opacity:1; transform: translateY(0) scale(1); } 100% { opacity:0; transform: translateY(-40px) scale(0.5); } }
+@keyframes badgeUnlock { 0% { transform: scale(0) rotate(-180deg); opacity:0; } 60% { transform: scale(1.3) rotate(10deg); opacity:1; } 100% { transform: scale(1) rotate(0deg); opacity:1; } }
+@keyframes badgeGlow { 0%,100% { box-shadow: 0 0 0 0 rgba(212,149,42,0.4); } 50% { box-shadow: 0 0 20px 8px rgba(212,149,42,0.2); } }
+@keyframes writing { 0%,100% { transform: translateY(0) rotate(-2deg); } 25% { transform: translateY(-1px) rotate(0deg); } 50% { transform: translateY(1px) rotate(2deg); } 75% { transform: translateY(-1px) rotate(0deg); } }
+@keyframes urgentPulse { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(184,80,58,0.4); } 50% { transform: scale(1.02); box-shadow: 0 0 0 20px rgba(184,80,58,0); } }
+@keyframes slowBreathe { 0%,100% { opacity: 0.6; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1.02); } }
+@keyframes slideInFromTop { from { opacity: 0; transform: translateY(-100%); } to { opacity: 1; transform: translateY(0); } }
+@keyframes timerRing { 0% { transform: rotate(0deg); } 10% { transform: rotate(15deg); } 20% { transform: rotate(-15deg); } 30% { transform: rotate(10deg); } 40% { transform: rotate(-10deg); } 50%,100% { transform: rotate(0deg); } }
+@keyframes progressShrink { from { width: 100%; } }
+
+.card-enter { animation: fadeIn 0.3s ease-out forwards; }
+.pop-enter { animation: popIn 0.35s ease-out forwards; }
+.slide-enter { animation: slideUp 0.4s ease-out forwards; }
+</style>
+
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+/* ========== 色彩系統 ========== */
+const P = {
+bg:”#f5f1eb”, card:”#fffdf8”, border:”#e0d6c8”,
+text:”#2e2418”, sub:”#7d6e5e”, accent:”#5a4a3a”,
+accentLight:”#7c6a56”, danger:”#b8503a”, green:”#4a7a5a”,
+tag:”#ede8df”, orange:”#9a5a28”, warmGlow:”#f0e6d6”,
+energyLow:”#c0613a”, energyMid:”#d4952a”, energyHigh:”#4a7a5a”,
+sakura:”#f0b4b4”, sakuraLight:”#fce4ec”,
+reward:”#c4953a”, rewardBg:”#fdf6e3”,
+};
+const PRIORITY = {
+high:{ label:“緊急”, color:”#b8503a”, bg:”#fbe9e2”, emoji:“🔴” },
+medium:{ label:“普通”, color:”#9a5a28”, bg:”#fef3e2”, emoji:“🟡” },
+low:{ label:“之後”, color:”#4a7a5a”, bg:”#e8f2ec”, emoji:“🟢” },
+};
+const SORT_ORDER = { high:0, medium:1, low:2 };
+const PERIOD_LABEL = { daily:“每日”, weekly:“每週”, monthly:“每月”, yearly:“每年” };
+const WEEKDAYS = [“週一”,“週二”,“週三”,“週四”,“週五”,“週六”,“週日”];
+const JS_WEEKDAY_MAP = { 1:“週一”,2:“週二”,3:“週三”,4:“週四”,5:“週五”,6:“週六”,0:“週日” };
+const MONTHDAYS = Array.from({length:31},(_,i)=>i+1);
+const MONTHS = [“1月”,“2月”,“3月”,“4月”,“5月”,“6月”,“7月”,“8月”,“9月”,“10月”,“11月”,“12月”];
+const ICONS = [“⭐”,“🏃”,“📖”,“🐶”,“🌱”,“🍱”,“💧”,“🛁”,“🪴”,“📝”,“🎵”,“🛒”,“💪”,“🧘”,“📞”,“🧴”,“🗂️”,“🪟”,“💡”,“🔧”,“🧺”,“🗑️”,“🧹”,“📦”,“💳”,“💊”,“✂️”,“🧦”,“🎂”,“📋”,“🏥”,“✈️”,“🔑”,“💰”,“🪪”];
+const ENERGY_LEVELS = [
+{ value:1, emoji:“🪫”, label:“快沒電了”, color:P.energyLow },
+{ value:2, emoji:“🔋”, label:“還行”, color:P.energyMid },
+{ value:3, emoji:“⚡”, label:“電力滿滿”, color:P.energyHigh },
+];
+
+const INIT_ALARM_PRESETS = [
+{ id:“p_1”, label:“💧 每小時喝水”, type:“interval”, interval:1, start:“09:00”, end:“21:00” },
+{ id:“p_2”, label:“🚶 每半小時起身”, type:“interval”, interval:0.5, start:“09:00”, end:“18:00” },
+{ id:“p_3”, label:“🍱 準備吃午餐”, type:“fixed”, time:“11:30” },
+{ id:“p_4”, label:“💪 上午運動”, type:“fixed”, time:“09:00” },
+{ id:“p_5”, label:“💪 下午運動”, type:“fixed”, time:“15:00” },
+{ id:“p_6”, label:“💊 吃藥”, type:“fixed”, time:“09:00” },
+{ id:“p_7”, label:“🌙 睡前整理”, type:“fixed”, time:“22:30” },
+{ id:“p_8”, label:“☀️ 起床”, type:“fixed”, time:“08:00” },
+];
+
+const INIT_ROUTINES = [
+{ id:“laundry”, icon:“🧺”, label:“洗衣服”, period:“weekly”, weekdays:[“週六”], monthdays:[], month:null, lastDone:null },
+{ id:“trash”, icon:“🗑️”, label:“倒垃圾”, period:“weekly”, weekdays:[“週三”], monthdays:[], month:null, lastDone:null },
+{ id:“clean”, icon:“🧹”, label:“打掃”, period:“weekly”, weekdays:[“週六”], monthdays:[], month:null, lastDone:null },
+{ id:“boxes”, icon:“📦”, label:“清空箱子”, period:“weekly”, weekdays:[“週日”], monthdays:[], month:null, lastDone:null },
+{ id:“bills”, icon:“💳”, label:“繳費”, period:“monthly”, weekdays:[], monthdays:[5], month:null, lastDone:null },
+{ id:“meds”, icon:“💊”, label:“補藥”, period:“monthly”, weekdays:[], monthdays:[1], month:null, lastDone:null },
+];
+
+const INIT_FOCUS_TEMPLATES = [
+{ id:“f_1”, icon:“🔋”, title:“極簡生存洗沐”, desc:“電力10%專用。不要管細節，有弄濕就算贏。”, energyLevel:1, steps:[
+{ id:“s_1”, text:“脫衣服進浴室”, duration:0 },
+{ id:“s_2”, text:“重點部位清潔 (腋下/私密)”, duration:120 },
+{ id:“s_3”, text:“洗臉與刷牙”, duration:300 },
+]},
+{ id:“f_2”, icon:“🚿”, title:“標準洗沐”, desc:“日常下班適用。限制洗頭與保養時間，防止完美主義發作。”, energyLevel:2, steps:[
+{ id:“s_4”, text:“卸妝與洗臉”, duration:180 },
+{ id:“s_5”, text:“洗頭”, duration:300 },
+{ id:“s_6”, text:“洗澡”, duration:300 },
+]},
+{ id:“f_3”, icon:“🌙”, title:“夜間護膚與刷牙”, desc:“整合電動牙刷與酸類保養吸收時間的精密排程。”, energyLevel:2, steps:[
+{ id:“s_7”, text:“塗抹酸類精華”, duration:60 },
+{ id:“s_8”, text:“電動刷牙 (等待吸收)”, duration:120 },
+{ id:“s_9”, text:“後續乳液保濕”, duration:60 },
+]},
+{ id:“f_skincare”, icon:“🧴”, title:“完整保養流程”, desc:“含果酸/A酸等待吸收時間，搭配輕音樂讓等待不無聊。”, energyLevel:2, steps:[
+{ id:“sk_1”, text:“溫水洗臉”, duration:120 },
+{ id:“sk_2”, text:“塗抹果酸/A酸精華”, duration:60 },
+{ id:“sk_3”, text:“等待吸收（放鬆一下）”, duration:900 },
+{ id:“sk_4”, text:“後續保濕乳液”, duration:60 },
+{ id:“sk_5”, text:“塗防曬（早上）或晚安面膜（晚上）”, duration:60 },
+]},
+{ id:“f_mealprep”, icon:“🍱”, title:“快速備餐”, desc:“防呆備餐流程，不用動腦就能吃到健康餐。”, energyLevel:2, steps:[
+{ id:“mp_1”, text:“打開冰箱，選出 2-3 種食材”, duration:120 },
+{ id:“mp_2”, text:“簡單清洗食材”, duration:180 },
+{ id:“mp_3”, text:“切塊（不需要漂亮，能吃就好）”, duration:300 },
+{ id:“mp_4”, text:“丟入氣炸鍋/微波爐”, duration:60 },
+{ id:“mp_5”, text:“等待烹調完成”, duration:600 },
+{ id:“mp_6”, text:“裝盤開吃！”, duration:0 },
+]},
+];
+
+/* ========== 多巴胺菜單 ========== */
+const INIT_DOPAMINE_MENU = [
+{ id:“d_1”, emoji:“🎵”, label:“聽一首喜歡的歌”, category:“sensory”, minutes:4 },
+{ id:“d_2”, emoji:“☀️”, label:“到窗邊曬太陽 3 分鐘”, category:“body”, minutes:3 },
+{ id:“d_3”, emoji:“🫧”, label:“洗手 + 擦護手霜”, category:“sensory”, minutes:2 },
+{ id:“d_4”, emoji:“🐱”, label:“看可愛動物影片”, category:“fun”, minutes:5 },
+{ id:“d_5”, emoji:“🍵”, label:“泡一杯熱飲”, category:“body”, minutes:5 },
+{ id:“d_6”, emoji:“🌬️”, label:“深呼吸 5 次”, category:“body”, minutes:1 },
+{ id:“d_7”, emoji:“💬”, label:“傳訊息給朋友”, category:“social”, minutes:3 },
+{ id:“d_8”, emoji:“🧊”, label:“用冷水洗臉”, category:“sensory”, minutes:1 },
+{ id:“d_9”, emoji:“🎨”, label:“隨手塗鴉”, category:“fun”, minutes:5 },
+{ id:“d_10”, emoji:“🚶”, label:“走到門口再走回來”, category:“body”, minutes:2 },
+];
+const DOPAMINE_CATS = { sensory:“感官刺激”, body:“動動身體”, fun:“純粹快樂”, social:“人際連結” };
+
+/* ========== 呼吸練習 ========== */
+const BREATH_PATTERNS = [
+{ id:“box”, name:“方塊呼吸”, desc:“平衡焦慮，回到當下”, inSec:4, holdSec:4, outSec:4, hold2Sec:4, cycles:4 },
+{ id:“478”, name:“4-7-8 呼吸”, desc:“快速放鬆，幫助入睡”, inSec:4, holdSec:7, outSec:8, hold2Sec:0, cycles:4 },
+{ id:“calm”, name:“延長吐氣”, desc:“啟動副交感神經”, inSec:4, holdSec:0, outSec:8, hold2Sec:0, cycles:6 },
+];
+
+/* ========== 里程碑 ========== */
+const MILESTONES = [
+{ count:1, emoji:“🌱”, title:“踏出第一步”, msg:“光是打開這個 app 就很棒了！” },
+{ count:3, emoji:“🌿”, title:“暖身完成”, msg:“三件事！你正在進入狀態。” },
+{ count:5, emoji:“🌳”, title:“超越自己”, msg:“五件事完成，你比想像中更有能力。” },
+{ count:7, emoji:“🌟”, title:“閃耀時刻”, msg:“七件事！今天真的很了不起。” },
+{ count:10, emoji:“👑”, title:“傳說級成就”, msg:“十件事？你根本就是超人！” },
+];
+
+/* ========== 溫柔推一把 ========== */
+const GENTLE_NUDGES = [
+“要不要先做最小的那一件？做完再說。”,
+“設一個 5 分鐘定時器，只做 5 分鐘就好。”,
+“先站起來，倒杯水，再回來看看。”,
+“選一件你「最不討厭」的來做。”,
+“把任務拆得更小。小到覺得「這也太簡單了吧」。”,
+“跟自己說：做 30% 就算成功。完美不是目標。”,
+“播一首喜歡的歌，在音樂裡開始做。”,
+“不想做也沒關係。休息也是一種生產力。”,
+“試試看「身體先動」：先把工具拿出來就好。”,
+“你已經打開了這個 app。這就是進步。”,
+];
+
+/* ========== 徽章系統 ========== */
+const BADGES = [
+{ id:“b_first”, icon:“🌟”, title:“初心者”, desc:“完成第一個任務”, check:s=>s.totalCompleted>=1 },
+{ id:“b_5tasks”, icon:“🔥”, title:“小火苗”, desc:“累計完成 5 個任務”, check:s=>s.totalCompleted>=5 },
+{ id:“b_20tasks”, icon:“💎”, title:“鑽石意志”, desc:“累計完成 20 個任務”, check:s=>s.totalCompleted>=20 },
+{ id:“b_50tasks”, icon:“👑”, title:“自律王者”, desc:“累計完成 50 個任務”, check:s=>s.totalCompleted>=50 },
+{ id:“b_streak3”, icon:“⚡”, title:“三連勝”, desc:“連續 3 天完成任務”, check:s=>s.streak>=3 },
+{ id:“b_streak7”, icon:“🏆”, title:“一週冒險者”, desc:“連續 7 天完成任務”, check:s=>s.streak>=7 },
+{ id:“b_streak14”, icon:“🐉”, title:“雙週龍騎士”, desc:“連續 14 天完成任務”, check:s=>s.streak>=14 },
+{ id:“b_forgive”, icon:“🌸”, title:“溫柔放下”, desc:“第一次使用一鍵原諒”, check:s=>s.forgiveCount>=1 },
+{ id:“b_forgive5”, icon:“🍃”, title:“物哀達人”, desc:“累計原諒 5 次”, check:s=>s.forgiveCount>=5 },
+{ id:“b_focus3”, icon:“🧘”, title:“專注修行”, desc:“完成 3 次專注計時”, check:s=>s.focusCompleted>=3 },
+{ id:“b_pet_happy”, icon:“😻”, title:“貓奴認證”, desc:“讓貓咪開心度達到 100”, check:s=>s.petHappiness>=100 },
+{ id:“b_breathe”, icon:“🫁”, title:“深呼吸大師”, desc:“完成 3 次呼吸練習”, check:s=>s.breatheCompleted>=3 },
+];
+
+/* ========== 環境音 ========== */
+const AMBIENT_SOUNDS = [
+{ id:“none”, label:“無”, emoji:“🔇” },
+{ id:“rain”, label:“雨聲”, emoji:“🌧️” },
+{ id:“cafe”, label:“咖啡廳”, emoji:“☕” },
+{ id:“lofi”, label:“Lo-Fi”, emoji:“🎵” },
+{ id:“fire”, label:“壁爐”, emoji:“🔥” },
+{ id:“forest”, label:“森林”, emoji:“🌲” },
+];
+
+/* ========== 強制放下：自我照顧全螢幕接管 ========== */
+const SELFCARE_PRESETS = [
+{ id:“sc_eat”, emoji:“🍽️”, label:“去吃飯”, title:“放下手邊的事，去吃飯”, subtitle:“你的大腦需要燃料才能運作”, color:”#d4952a”, bgGrad:“linear-gradient(160deg, #fef3e2 0%, #fdf6e3 50%, #f5f1eb 100%)”,
+messages:[“餓著肚子的效率是零”,“吃飯不是浪費時間，是投資效率”,“你值得好好吃一頓”,“血糖掉了，意志力也會掉”],
+defaultMin:30, checklistItems:[“站起來離開螢幕”,“去廚房或餐廳”,“好好吃完一餐”,“喝一杯水”] },
+{ id:“sc_sleep”, emoji:“🛏️”, label:“去睡覺”, title:“今天到此為止，去睡覺”, subtitle:“睡眠是大腦的重開機”, color:”#6a5a8a”, bgGrad:“linear-gradient(160deg, #ede8f5 0%, #e8e0f0 50%, #f5f1eb 100%)”,
+messages:[“熬夜做的事，明天要花兩倍時間修正”,“睡飽的你，比現在的你強十倍”,“明天的你會感謝現在的你”,“沒有什麼事重要到值得犧牲睡眠”],
+defaultMin:15, checklistItems:[“存檔目前的工作”,“關閉所有螢幕”,“刷牙洗臉”,“躺到床上”] },
+{ id:“sc_exercise”, emoji:“🏃”, label:“去運動”, title:“動起來！你的身體在呼救”, subtitle:“運動 20 分鐘 = 免費的多巴胺”, color:”#4a7a5a”, bgGrad:“linear-gradient(160deg, #e8f2ec 0%, #dceee4 50%, #f5f1eb 100%)”,
+messages:[“運動完的你會感謝現在的你”,“只要 20 分鐘，心情就會不一樣”,“你的身體不是用來坐一整天的”,“動起來，卡住的腦袋也會開始動”],
+defaultMin:5, checklistItems:[“換上運動服/舒服的衣服”,“穿上鞋子”,“出門或打開運動影片”,“動起來！”] },
+{ id:“sc_break”, emoji:“☕”, label:“休息一下”, title:“暫停！你需要休息”, subtitle:“休息是為了走更長的路”, color:”#9a5a28”, bgGrad:“linear-gradient(160deg, #f0e6d6 0%, #ede8df 50%, #f5f1eb 100%)”,
+messages:[“連續工作超過 90 分鐘，效率會暴跌”,“休息不是偷懶，是策略”,“給大腦 10 分鐘假期”,“站起來，走一走，看看遠方”],
+defaultMin:10, checklistItems:[“站起來伸展”,“離開螢幕”,“喝一杯水”,“做幾個深呼吸”] },
+];
+
+/* ========== 防拖延：5 分鐘啟動法 & 拆解提示 ========== */
+const ANTI_PROCRASTINATION_TIPS = [
+“🎯 五分鐘法則：告訴自己只做 5 分鐘就好。通常一旦開始就停不下來。”,
+“🔬 把它縮小：不是「整理房間」，而是「把桌上的杯子拿去洗」。”,
+“🎲 隨機開始：閉上眼睛隨便指一個任務，不用挑最重要的。”,
+“👟 身體先動：先站起來，拿出工具，打開檔案。大腦會跟上的。”,
+“🍅 設一個超短計時：2 分鐘就好。兩分鐘後可以選擇繼續或停下。”,
+“📝 寫下第一步：把任務拆成「打開電腦」→「打開文件」→「寫第一句話」。”,
+“🏆 30% 就是滿分：完美主義是拖延的燃料。做到 30% 就算贏。”,
+“🎵 放一首歌：在音樂結束之前，至少開始做一件事。”,
+“👀 換個環境：搬到另一個房間、另一張桌子、咖啡廳。”,
+“🤝 找人一起：開虛擬共事，有人陪就不那麼難開始了。”,
+];
+
+/* ========== 音效 ========== */
+let globalAudioCtx = null;
+const initAudio = () => { try { if(!globalAudioCtx){ const A=window.AudioContext||window.webkitAudioContext; if(A) globalAudioCtx=new A(); } if(globalAudioCtx?.state===‘suspended’) globalAudioCtx.resume(); } catch(e){} };
+
+const playSound = (type=‘alarm’) => {
+if(!globalAudioCtx) return;
+try {
+const now=globalAudioCtx.currentTime;
+const t=(freq,start,dur,vol=0.4)=>{
+const o=globalAudioCtx.createOscillator(),g=globalAudioCtx.createGain();
+o.connect(g);g.connect(globalAudioCtx.destination);
+o.type=‘sine’;o.frequency.value=freq;
+g.gain.setValueAtTime(0,start);g.gain.linearRampToValueAtTime(vol,start+0.04);g.gain.linearRampToValueAtTime(0,start+dur);
+o.start(start);o.stop(start+dur);
+};
+if(type===‘alarm’){ t(880,now,0.2);t(880,now+0.3,0.2);t(1046,now+0.6,0.4); }
+else if(type===‘complete’){ t(523,now,0.15,0.3);t(659,now+0.12,0.15,0.3);t(784,now+0.24,0.3,0.3); }
+else if(type===‘tick’){ t(660,now,0.08,0.15); }
+else if(type===‘milestone’||type===‘badge’){ t(523,now,0.12,0.3);t(659,now+0.1,0.12,0.3);t(784,now+0.2,0.12,0.3);t(1046,now+0.35,0.4,0.35); }
+else if(type===‘sakura’){ t(523,now,0.3,0.15);t(392,now+0.2,0.4,0.12);t(330,now+0.5,0.5,0.08); }
+else if(type===‘meow’){ t(600,now,0.15,0.2);t(700,now+0.1,0.1,0.25);t(500,now+0.2,0.2,0.15); }
+else if(type===‘breathe’){ t(396,now,0.6,0.15); }
+} catch(e){}
+};
+
+/* ========== 環境音生成 ========== */
+let ambientNodes = [];
+const stopAmbient = () => { ambientNodes.forEach(n=>{try{n.stop?.();n.disconnect?.();}catch(e){}}); if(ambientNodes._timer) clearTimeout(ambientNodes._timer); ambientNodes=[]; };
+const playAmbient = (id) => {
+stopAmbient(); if(!globalAudioCtx||id===‘none’) return;
+try {
+const ctx=globalAudioCtx;
+if(id===‘rain’||id===‘forest’){
+const sz=2*ctx.sampleRate, buf=ctx.createBuffer(1,sz,ctx.sampleRate), d=buf.getChannelData(0);
+let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+for(let i=0;i<sz;i++){const w=Math.random()*2-1;b0=0.99886*b0+w*0.0555179;b1=0.99332*b1+w*0.0750759;b2=0.96900*b2+w*0.1538520;b3=0.86650*b3+w*0.3104856;b4=0.55000*b4+w*0.5329522;b5=-0.7616*b5-w*0.0168980;d[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.028;b6=w*0.115926;}
+const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;
+const g=ctx.createGain();g.gain.value=id===‘rain’?0.35:0.25;
+const f=ctx.createBiquadFilter();f.type=‘lowpass’;f.frequency.value=id===‘rain’?800:400;
+s.connect(f);f.connect(g);g.connect(ctx.destination);s.start();ambientNodes.push(s,g,f);
+} else if(id===‘cafe’){
+const sz=2*ctx.sampleRate,buf=ctx.createBuffer(1,sz,ctx.sampleRate),d=buf.getChannelData(0);let prev=0;
+for(let i=0;i<sz;i++){prev=(prev+(0.02*(Math.random()*2-1)))/1.02;d[i]=prev*3.5;}
+const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;const g=ctx.createGain();g.gain.value=0.2;
+const f=ctx.createBiquadFilter();f.type=‘lowpass’;f.frequency.value=500;
+s.connect(f);f.connect(g);g.connect(ctx.destination);s.start();ambientNodes.push(s,g,f);
+} else if(id===‘lofi’){
+const chords=[[261,329,392],[293,349,440],[329,392,493],[261,329,392]];let ci=0;
+const play=()=>{if(ambientNodes.length===0&&ci>0)return;const ch=chords[ci%chords.length];
+ch.forEach(fr=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=‘triangle’;o.frequency.value=fr;
+g.gain.setValueAtTime(0,ctx.currentTime);g.gain.linearRampToValueAtTime(0.06,ctx.currentTime+0.3);g.gain.linearRampToValueAtTime(0,ctx.currentTime+2.8);
+o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+3);});ci++;ambientNodes._timer=setTimeout(play,3000);};
+play();ambientNodes.push({stop:()=>clearTimeout(ambientNodes._timer),disconnect:()=>{}});
+} else if(id===‘fire’){
+const sz=2*ctx.sampleRate,buf=ctx.createBuffer(1,sz,ctx.sampleRate),d=buf.getChannelData(0);let prev=0;
+for(let i=0;i<sz;i++){prev=(prev+(0.05*(Math.random()*2-1)))/1.05;d[i]=prev*4+Math.sin(i/200)*0.02;}
+const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;const g=ctx.createGain();g.gain.value=0.3;
+const f=ctx.createBiquadFilter();f.type=‘bandpass’;f.frequency.value=300;f.Q.value=0.5;
+s.connect(f);f.connect(g);g.connect(ctx.destination);s.start();ambientNodes.push(s,g,f);
+}
+} catch(e){}
+};
+
+const safeNotify=(title)=>{try{if(typeof window===“undefined”||!(“Notification” in window))return;if(window.Notification.permission===“granted”)new window.Notification(“⏰ “+title,{body:“ADHD 管理提醒”});}catch(e){}};
+const safeRequestNotifPerm=()=>{try{if(typeof window!==“undefined”&&“Notification” in window&&window.Notification.permission===“default”)window.Notification.requestPermission();}catch(e){}};
+
+/* ========== 工具函數 ========== */
+const todayStr=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+const formatTimeZh=(sec)=>{const m=Math.floor(sec/60),s=sec%60;if(m>0&&s>0)return `${m}分${s}秒`;if(m>0)return `${m}分鐘`;return `${s}秒`;};
+const formatIntervalZh=(h)=>{const n=Number(h);return n<1?`每 ${n*60} 分鐘`:`每 ${n} 小時`;};
+const formatIntervalShort=(h)=>{const n=Number(h);return n<1?`每${n*60}分`:`每${n}h`;};
+const genId=()=>`${Date.now()}_${Math.random().toString(36).substr(2,9)}`;
+const emptyDraft=(period=“weekly”)=>({label:””,icon:“⭐”,period,weekdays:period===“weekly”?[“週一”]:[],monthdays:period===“monthly”?[1]:[],month:period===“yearly”?“1月”:null});
+const emptyFocusDraft=()=>({id:`f_${genId()}`,icon:“⏳”,title:””,desc:””,energyLevel:2,steps:[]});
+
+const calcStreak=(history)=>{
+const dates=Object.keys(history).filter(d=>history[d]>0).sort().reverse();
+if(dates.length===0)return 0;let streak=0;const today=new Date();today.setHours(0,0,0,0);
+for(let i=0;i<dates.length;i++){const[y,m,d]=dates[i].split(’-’).map(Number);const check=new Date(y,m-1,d);check.setHours(0,0,0,0);
+const diff=Math.round((today-check)/86400000);if(diff===i||diff===i+1)streak++;else break;}return streak;
+};
+const getLast7Days=(history)=>{
+const result=[];const today=new Date();today.setHours(0,0,0,0);
+for(let i=6;i>=0;i–){const d=new Date(today);d.setDate(d.getDate()-i);
+const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+result.push({date:key,weekday:[“日”,“一”,“二”,“三”,“四”,“五”,“六”][d.getDay()],count:history[key]||0});}return result;
+};
+const getRoutinesForToday=(routines)=>{
+const now=new Date(),jsDay=now.getDay(),todayWD=JS_WEEKDAY_MAP[jsDay],todayDate=now.getDate(),todayMonth=MONTHS[now.getMonth()];
+return routines.filter(r=>{if(r.period===“daily”)return true;if(r.period===“weekly”)return(r.weekdays||[]).includes(todayWD);
+if(r.period===“monthly”)return(r.monthdays||[]).includes(todayDate);if(r.period===“yearly”)return r.month===todayMonth;return false;});
+};
+
+/* ========== 資料持久化 ========== */
+const DATA_KEY=“adhd_v14”;
+const defaultData={
+anchor:””,deadlines:[],leaveTime:””,prepMinutes:40,
+pendingItems:[],alarms:[],alarmPresets:INIT_ALARM_PRESETS,
+routines:INIT_ROUTINES,focusTemplates:INIT_FOCUS_TEMPLATES,
+todayEnergy:2,completedToday:[],completedHistory:{},lastAutoGenDate:null,
+// Pet & badges
+petTreats:0,petHappiness:50,petLastFed:null,unlockedBadges:[],forgiveCount:0,focusCompleted:0,breatheCompleted:0,
+// Mood & selfcare
+moodLog:[],dopamineMenu:INIT_DOPAMINE_MENU,
+totalCompleted:0,milestoneSeen:[],bodyDoubleMinutes:25,
+// Self-care reminders
+selfCareReminders:[], // {id, presetId, time, enabled}
+procrastinationStarts:0, // count of 5-min starts today
+};
+
+const loadData=()=>{
+try{
+let raw=localStorage.getItem(DATA_KEY);
+if(!raw){for(const k of[“adhd_v13”,“adhd_v12”,“adhd_v11”]){raw=localStorage.getItem(k);if(raw)break;}if(!raw)return defaultData;}
+const p=JSON.parse(raw);
+if(!p.routines)p.routines=INIT_ROUTINES;if(!p.focusTemplates)p.focusTemplates=INIT_FOCUS_TEMPLATES;
+p.routines=p.routines.map(r=>{let md=r.monthdays||[];if(r.monthday){md=[r.monthday];delete r.monthday;}
+return{…r,weekdays:r.weekdays||(r.weekday?[r.weekday]:[]),monthdays:md,month:r.month||null,lastDone:r.lastDone||null};});
+if(!p.alarmPresets)p.alarmPresets=INIT_ALARM_PRESETS;if(!p.completedToday)p.completedToday=[];
+if(!p.completedHistory)p.completedHistory={};if(!p.todayEnergy)p.todayEnergy=2;
+// Ensure new fields
+const ensure=(key,def)=>{if(p[key]===undefined)p[key]=def;};
+ensure(‘petTreats’,0);ensure(‘petHappiness’,50);ensure(‘unlockedBadges’,[]);ensure(‘forgiveCount’,0);
+ensure(‘focusCompleted’,0);ensure(‘breatheCompleted’,0);ensure(‘moodLog’,[]);
+ensure(‘dopamineMenu’,INIT_DOPAMINE_MENU);ensure(‘totalCompleted’,0);ensure(‘milestoneSeen’,[]);ensure(‘bodyDoubleMinutes’,25);
+ensure(‘selfCareReminders’,[]);ensure(‘procrastinationStarts’,0);
+return{…defaultData,…p};
+}catch(e){return defaultData;}
+};
+const saveData=(d)=>{try{localStorage.setItem(DATA_KEY,JSON.stringify(d));}catch(e){}};
+
+/* ========== 樣式常數 ========== */
+const st={
+app:{minHeight:“100vh”,background:P.bg,fontFamily:”‘Noto Sans TC’, sans-serif”,color:P.text,paddingBottom:80},
+sec:{margin:“16px 14px 0”,background:P.card,borderRadius:16,border:`1px solid ${P.border}`,overflow:“hidden”,animation:“fadeIn 0.3s ease-out”},
+sH:{padding:“14px 18px 10px”,borderBottom:`1px solid ${P.border}`,display:“flex”,alignItems:“center”,justifyContent:“space-between”},
+sT:{fontSize:13,fontWeight:700,color:P.sub,letterSpacing:1},
+sB:{padding:“14px 18px”},
+inp:{width:“100%”,border:`1px solid ${P.border}`,borderRadius:10,padding:“10px 14px”,fontSize:15,background:P.bg,color:P.text,outline:“none”,boxSizing:“border-box”,fontFamily:“inherit”,transition:“border-color 0.2s”},
+btn:{border:“none”,borderRadius:10,padding:“9px 18px”,fontSize:14,cursor:“pointer”,fontFamily:“inherit”,transition:“all 0.15s ease”},
+row:{display:“flex”,gap:8,alignItems:“center”},
+};
+
+/* ========== 小元件 ========== */
+const DayBadge=({n})=>(<span style={{background:n<0?”#fbe9e2”:n<=1?”#fbe9e2”:n<=3?”#fef3e2”:P.tag,color:n<0?P.danger:n<=1?P.danger:n<=3?P.orange:P.sub,borderRadius:20,padding:“3px 10px”,fontSize:12,fontWeight:700,whiteSpace:“nowrap”}}>{n<0?`已過期 ${Math.abs(n)} 天`:n===0?“今天截止！”:`${n} 天`}</span>);
+
+const PriBadge=({value,onChange})=>{
+const[open,setOpen]=useState(false);const pv=PRIORITY[value]||PRIORITY.medium;const ref=useRef();
+useEffect(()=>{const h=e=>{if(ref.current&&!ref.current.contains(e.target))setOpen(false);};document.addEventListener(“mousedown”,h);return()=>document.removeEventListener(“mousedown”,h);},[]);
+return(<div ref={ref} style={{position:“relative”,display:“inline-block”,flexShrink:0}}>
+<button onClick={()=>setOpen(o=>!o)} style={{…st.btn,background:pv.bg,color:pv.color,padding:“5px 10px”,fontSize:12,fontWeight:700,border:`1.5px solid ${pv.color}`,display:“flex”,alignItems:“center”,gap:4,whiteSpace:“nowrap”}}>{pv.emoji} {pv.label} <span style={{fontSize:10,opacity:0.7}}>▾</span></button>
+{open&&(<div style={{position:“absolute”,bottom:“110%”,left:0,zIndex:100,background:P.card,border:`1px solid ${P.border}`,borderRadius:10,boxShadow:“0 -4px 20px rgba(0,0,0,0.12)”,overflow:“hidden”,minWidth:90}}>
+{Object.entries(PRIORITY).map(([k,v])=>(<button key={k} onClick={()=>{onChange(k);setOpen(false);}} style={{…st.btn,display:“block”,width:“100%”,textAlign:“left”,padding:“10px 14px”,fontSize:13,background:k===value?v.bg:P.card,color:k===value?v.color:P.text,borderRadius:0,fontWeight:k===value?700:400}}>{v.emoji} {v.label}</button>))}
+</div>)}</div>);
+};
+
+const CompletionBurst=({show,onDone})=>{
+useEffect(()=>{if(show){const t=setTimeout(onDone,800);return()=>clearTimeout(t);}},[show]);
+if(!show)return null;const emojis=[“🎉”,“✨”,“⭐”,“💪”,“🌟”];
+return(<div style={{position:“fixed”,top:“40%”,left:“50%”,transform:“translate(-50%,-50%)”,zIndex:9999,pointerEvents:“none”}}>
+{emojis.map((e,i)=>(<span key={i} style={{position:“absolute”,fontSize:28,animation:`confettiBurst 0.8s ease-out forwards`,animationDelay:`${i*0.05}s`,left:`${(i-2)*30}px`,top:`${Math.random()*20-10}px`}}>{e}</span>))}</div>);
+};
+
+const SakuraShredder=({show,onDone,items})=>{
+useEffect(()=>{if(show){const t=setTimeout(onDone,2500);return()=>clearTimeout(t);}},[show]);
+if(!show)return null;const petals=[];
+for(let i=0;i<20;i++)petals.push(<span key={i} style={{position:“absolute”,fontSize:Math.random()>0.5?20:16,left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,animation:`${Math.random()>0.5?'sakuraFall':'sakuraFallAlt'} ${1.5+Math.random()*1.5}s ease-out forwards`,animationDelay:`${Math.random()*0.8}s`,opacity:0}}>🌸</span>);
+return(<div style={{position:“fixed”,inset:0,zIndex:9998,pointerEvents:“none”,display:“flex”,alignItems:“center”,justifyContent:“center”}}>
+<div style={{position:“absolute”,inset:0,background:“rgba(252,228,236,0.3)”,animation:“fadeIn 0.3s ease-out”}}/>
+<div style={{position:“relative”,width:“80%”,maxWidth:320,textAlign:“center”,zIndex:1}}>
+<div style={{fontSize:24,fontWeight:700,color:P.sakura,marginBottom:8,animation:“fadeIn 0.5s ease-out”,fontFamily:”‘Noto Serif TC’, serif”}}>今天這樣就很好了</div>
+<div style={{fontSize:14,color:P.sub,animation:“fadeIn 0.8s ease-out”}}>明天再說吧 🍃</div>
+{items&&items.length>0&&(<div style={{marginTop:12}}>{items.map((t,i)=>(<div key={i} style={{fontSize:13,color:P.sub,opacity:0.6,padding:“2px 0”,textDecoration:“line-through”}}>{t}</div>))}</div>)}
+{petals}
+</div></div>);
+};
+
+const MilestoneCelebration=({milestone,onClose})=>{
+if(!milestone)return null;
+return(<div style={{position:“fixed”,inset:0,zIndex:10000,background:“rgba(46,36,24,0.85)”,display:“flex”,alignItems:“center”,justifyContent:“center”,backdropFilter:“blur(6px)”}} onClick={onClose}>
+<div style={{background:P.card,borderRadius:24,padding:“40px 32px”,maxWidth:320,textAlign:“center”,animation:“popIn 0.5s ease-out”,boxShadow:“0 20px 60px rgba(0,0,0,0.3)”}} onClick={e=>e.stopPropagation()}>
+<div style={{fontSize:72,animation:“starPop 0.6s ease-out”,marginBottom:16}}>{milestone.emoji}</div>
+<div style={{fontSize:22,fontWeight:900,color:P.reward,fontFamily:”‘Noto Serif TC’, serif”,marginBottom:8}}>{milestone.title}</div>
+<div style={{fontSize:15,color:P.sub,lineHeight:1.6,marginBottom:24}}>{milestone.msg}</div>
+<div style={{fontSize:13,color:P.sub,marginBottom:20}}>已完成 {milestone.count} 件事</div>
+<button onClick={onClose} style={{…st.btn,background:P.reward,color:”#fff”,padding:“14px 40px”,fontSize:16,fontWeight:700,borderRadius:30}}>太棒了！</button>
+</div></div>);
+};
+
+const BadgeUnlockNotif=({badge,onDone})=>{
+useEffect(()=>{const t=setTimeout(onDone,3500);return()=>clearTimeout(t);},[]);
+if(!badge)return null;
+return(<div style={{position:“fixed”,top:“30%”,left:“50%”,transform:“translate(-50%,-50%)”,zIndex:10000,pointerEvents:“none”,textAlign:“center”}}>
+<div style={{fontSize:64,animation:“badgeUnlock 0.8s ease-out forwards”,marginBottom:12}}>{badge.icon}</div>
+<div style={{fontSize:20,fontWeight:900,color:P.accent,fontFamily:”‘Noto Serif TC’, serif”,animation:“fadeIn 0.5s ease-out 0.3s both”}}>解鎖成就！</div>
+<div style={{fontSize:16,fontWeight:700,color:P.orange,marginTop:4,animation:“fadeIn 0.5s ease-out 0.5s both”}}>{badge.title}</div>
+<div style={{fontSize:13,color:P.sub,marginTop:4,animation:“fadeIn 0.5s ease-out 0.7s both”}}>{badge.desc}</div>
+
+  </div>);
+};
+
+const VirtualPet=({happiness,treats,isEating,recentHeart})=>{
+const h=Math.min(100,Math.max(0,happiness));let face=“😺”;
+if(h>=80)face=“😻”;else if(h>=50)face=“😺”;else if(h>=30)face=“😿”;else face=“🙀”;
+return(<div style={{position:“relative”,display:“inline-flex”,flexDirection:“column”,alignItems:“center”,gap:4}}>
+<div style={{fontSize:36,animation:isEating?“catEat 0.5s ease-out”:“catIdle 3s ease-in-out infinite”,cursor:“default”}}>{face}</div>
+<div style={{width:48,height:4,background:P.border,borderRadius:2,overflow:“hidden”}}><div style={{width:`${h}%`,height:“100%”,background:h>=50?P.green:P.energyLow,borderRadius:2,transition:“width 0.5s ease”}}/></div>
+<div style={{fontSize:10,color:P.sub}}>🐟 {treats}</div>
+{recentHeart&&<span style={{position:“absolute”,top:-10,right:-8,fontSize:16,animation:“heartBubble 1s ease-out forwards”,pointerEvents:“none”}}>❤️</span>}
+{isEating&&<span style={{position:“absolute”,top:-5,left:-8,fontSize:14,animation:“treatFloat 0.8s ease-out forwards”,pointerEvents:“none”}}>🐟</span>}
+
+  </div>);
+};
+
+const EnergyPicker=({value,onChange})=>(<div style={{display:“flex”,gap:8,alignItems:“center”}}>
+<span style={{fontSize:12,color:P.sub,fontWeight:500}}>今日電量：</span>
+{ENERGY_LEVELS.map(lv=>(<button key={lv.value} onClick={()=>onChange(lv.value)} style={{…st.btn,padding:“6px 14px”,fontSize:14,background:value===lv.value?lv.color:P.tag,color:value===lv.value?”#fff”:P.sub,border:`2px solid ${value===lv.value?lv.color:"transparent"}`,borderRadius:20,fontWeight:600,transition:“all 0.2s”}}>{lv.emoji} {lv.label}</button>))}
+
+</div>);
+
+const RoutineFields=({draft,setDraft})=>{
+const toggleWD=day=>{const cur=draft.weekdays||[];setDraft(d=>({…d,weekdays:cur.includes(day)?cur.filter(x=>x!==day):[…cur,day]}));};
+const toggleMD=day=>{const cur=draft.monthdays||[];setDraft(d=>({…d,monthdays:(cur.includes(day)?cur.filter(x=>x!==day):[…cur,day]).sort((a,b)=>a-b)}));};
+const changePeriod=p=>setDraft(d=>({…d,period:p,weekdays:p===“weekly”?(d.weekdays?.length?d.weekdays:[“週一”]):[],monthdays:p===“monthly”?(d.monthdays?.length?d.monthdays:[1]):[],month:p===“yearly”?(d.month||“1月”):null}));
+return(<div>
+<div style={{marginBottom:10}}><div style={{fontSize:12,color:P.sub,marginBottom:6}}>圖示</div>
+<div style={{display:“flex”,flexWrap:“wrap”,gap:5}}>{ICONS.map(ic=>(<button key={ic} onClick={()=>setDraft(d=>({…d,icon:ic}))} style={{…st.btn,padding:“5px 9px”,fontSize:15,background:draft.icon===ic?P.accent:P.card,color:draft.icon===ic?”#fff”:P.text,border:`1px solid ${draft.icon===ic?P.accent:P.border}`}}>{ic}</button>))}</div></div>
+<div style={{…st.row,flexWrap:“wrap”,gap:8,marginBottom:10}}>
+<input style={{…st.inp,flex:2,minWidth:120}} placeholder=“事項名稱” value={draft.label} onChange={e=>setDraft(d=>({…d,label:e.target.value}))}/>
+<select style={{…st.inp,flex:1,minWidth:90}} value={draft.period} onChange={e=>changePeriod(e.target.value)}><option value="daily">每日</option><option value="weekly">每週</option><option value="monthly">每月</option><option value="yearly">每年</option></select>
+</div>
+{draft.period===“weekly”&&<div style={{marginBottom:10}}><div style={{fontSize:12,color:P.sub,marginBottom:6}}>哪幾天？</div><div style={{display:“flex”,flexWrap:“wrap”,gap:6}}>{WEEKDAYS.map(d=>{const sel=(draft.weekdays||[]).includes(d);return(<button key={d} onClick={()=>toggleWD(d)} style={{…st.btn,padding:“6px 12px”,fontSize:13,background:sel?P.accent:P.card,color:sel?”#fff”:P.text,border:`1px solid ${sel?P.accent:P.border}`,fontWeight:sel?700:400}}>{d}</button>);})}</div></div>}
+{draft.period===“monthly”&&<div style={{marginBottom:10}}><div style={{fontSize:12,color:P.sub,marginBottom:6}}>每月幾號？</div><div style={{display:“flex”,flexWrap:“wrap”,gap:5}}>{MONTHDAYS.map(n=>{const sel=(draft.monthdays||[]).includes(n);return(<button key={n} onClick={()=>toggleMD(n)} style={{…st.btn,padding:“5px 8px”,fontSize:13,background:sel?P.accent:P.card,color:sel?”#fff”:P.text,border:`1px solid ${sel?P.accent:P.border}`,minWidth:36,fontWeight:sel?700:400}}>{n}</button>);})}</div></div>}
+{draft.period===“yearly”&&<div style={{marginBottom:10}}><div style={{fontSize:12,color:P.sub,marginBottom:6}}>哪個月？</div><div style={{display:“flex”,flexWrap:“wrap”,gap:5}}>{MONTHS.map(m=>{const sel=draft.month===m;return(<button key={m} onClick={()=>setDraft(d=>({…d,month:m}))} style={{…st.btn,padding:“6px 12px”,fontSize:13,background:sel?P.accent:P.card,color:sel?”#fff”:P.text,border:`1px solid ${sel?P.accent:P.border}`,fontWeight:sel?700:400}}>{m}</button>);})}</div></div>}
+
+  </div>);
+};
+const scheduleHint=r=>{if(r.period==="daily")return"每日";if(r.period==="weekly"){const d=(r.weekdays||[]).join("、");return d?`每週 ${d}`:"每週";}if(r.period==="monthly"){const md=(r.monthdays||[]).join("、");return md?`每月 ${md} 號`:"每月";}if(r.period==="yearly")return r.month?`每年 ${r.month}`:"每年";return"";};
+
+/* ========== 呼吸練習全屏 ========== */
+const BreathingExercise=({pattern,onClose,onComplete})=>{
+const[phase,setPhase]=useState(“ready”);const[secondsLeft,setSecondsLeft]=useState(3);const[cycleCount,setCycleCount]=useState(0);
+useEffect(()=>{
+if(phase===“ready”){if(secondsLeft<=0){setPhase(“in”);setSecondsLeft(pattern.inSec);return;}const t=setTimeout(()=>setSecondsLeft(s=>s-1),1000);return()=>clearTimeout(t);}
+if(phase===“done”)return;
+if(secondsLeft<=0){
+if(phase===“in”){if(pattern.holdSec>0){setPhase(“hold”);setSecondsLeft(pattern.holdSec);}else{setPhase(“out”);setSecondsLeft(pattern.outSec);}}
+else if(phase===“hold”){setPhase(“out”);setSecondsLeft(pattern.outSec);}
+else if(phase===“out”){if(pattern.hold2Sec>0){setPhase(“hold2”);setSecondsLeft(pattern.hold2Sec);}else{const next=cycleCount+1;if(next>=pattern.cycles){setPhase(“done”);playSound(‘complete’);onComplete?.();}else{setCycleCount(next);setPhase(“in”);setSecondsLeft(pattern.inSec);}}}
+else if(phase===“hold2”){const next=cycleCount+1;if(next>=pattern.cycles){setPhase(“done”);playSound(‘complete’);onComplete?.();}else{setCycleCount(next);setPhase(“in”);setSecondsLeft(pattern.inSec);}}
+return;}
+const t=setTimeout(()=>setSecondsLeft(s=>s-1),1000);return()=>clearTimeout(t);
+},[phase,secondsLeft]);
+const phaseLabel={ready:“準備好了嗎？”,in:“吸氣”,hold:“屏住”,out:“吐氣”,hold2:“屏住”,done:“做得好！”};
+const phaseColor={ready:P.sub,in:P.green,hold:P.orange,out:P.accent,hold2:P.orange,done:P.green};
+const phaseAnim=phase===“in”?“breatheIn”:phase===“out”?“breatheOut”:“breatheHold”;
+const phaseDur=phase===“in”?pattern.inSec:phase===“hold”?pattern.holdSec:phase===“out”?pattern.outSec:phase===“hold2”?pattern.hold2Sec:1;
+return(<div style={{…st.app,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,background:`linear-gradient(180deg, #e8f2ec 0%, ${P.bg} 100%)`,padding:24}}>
+<button onClick={onClose} style={{position:“absolute”,top:“calc(env(safe-area-inset-top,0px)+16px)”,left:16,background:“transparent”,border:“none”,color:P.sub,fontSize:15,cursor:“pointer”}}>✕ 離開</button>
+<div style={{fontSize:14,color:P.sub,marginBottom:8}}>{pattern.name}</div>
+<div style={{fontSize:13,color:P.sub,marginBottom:40}}>第 {cycleCount+1} / {pattern.cycles} 輪</div>
+<div style={{width:180,height:180,borderRadius:“50%”,background:`radial-gradient(circle, ${phaseColor[phase]}30 0%, ${phaseColor[phase]}10 70%, transparent 100%)`,display:“flex”,alignItems:“center”,justifyContent:“center”,animation:phase!==“ready”&&phase!==“done”?`${phaseAnim} ${phaseDur}s ease-in-out`:“none”}}>
+<div style={{width:120,height:120,borderRadius:“50%”,background:`${phaseColor[phase]}20`,border:`3px solid ${phaseColor[phase]}`,display:“flex”,alignItems:“center”,justifyContent:“center”,flexDirection:“column”}}>
+{phase!==“done”?<div style={{fontSize:36,fontWeight:900,color:phaseColor[phase],fontFamily:“monospace”}}>{secondsLeft}</div>:<div style={{fontSize:40}}>🧘</div>}
+</div></div>
+<div style={{fontSize:26,fontWeight:900,color:phaseColor[phase],marginTop:36,fontFamily:”‘Noto Serif TC’, serif”}}>{phaseLabel[phase]}</div>
+{phase===“done”&&<div style={{marginTop:40}}><div style={{fontSize:15,color:P.sub,marginBottom:20,textAlign:“center”}}>你剛剛給了大腦一個小假期</div>
+<button onClick={onClose} style={{…st.btn,background:P.green,color:”#fff”,padding:“14px 40px”,fontSize:16,fontWeight:700,borderRadius:30}}>回到現實</button></div>}
+
+  </div>);
+};
+
+/* ========== Body Double 計時器 ========== */
+const BodyDoubleTimer=({minutes,onClose})=>{
+const[secondsLeft,setSecondsLeft]=useState(minutes*60);const[isRunning,setIsRunning]=useState(true);const[isFinished,setIsFinished]=useState(false);
+useEffect(()=>{if(!isRunning||isFinished)return;if(secondsLeft<=0){setIsFinished(true);playSound(‘milestone’);return;}const t=setTimeout(()=>setSecondsLeft(s=>s-1),1000);return()=>clearTimeout(t);},[secondsLeft,isRunning,isFinished]);
+const total=minutes*60,progress=((total-secondsLeft)/total)*100;
+const formatClock=sec=>`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+const msgs=[“你不是一個人在做。”,“專注在你的事就好。”,“一步一步來。”,“你正在做很棒的事。”,“不需要完美，只要開始。”];
+const msg=msgs[Math.floor((total-secondsLeft)/60)%msgs.length];
+if(isFinished)return(<div style={{…st.app,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,padding:24,background:`linear-gradient(160deg,${P.warmGlow} 0%,${P.card} 100%)`}}>
+<div style={{fontSize:72,marginBottom:20,animation:“gentleFloat 2s ease-in-out infinite”}}>🎊</div>
+<div style={{fontSize:28,fontWeight:900,color:P.accent,marginBottom:12,fontFamily:”‘Noto Serif TC’, serif”}}>共事時間結束！</div>
+<div style={{fontSize:16,color:P.sub,marginBottom:8}}>你專注了 {minutes} 分鐘</div>
+<div style={{fontSize:14,color:P.sub,marginBottom:40}}>休息一下，你值得的。</div>
+<button onClick={onClose} style={{…st.btn,background:P.accent,color:”#fff”,padding:“16px 48px”,fontSize:18,fontWeight:700,borderRadius:30}}>完成</button></div>);
+return(<div style={{…st.app,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,padding:24,background:`linear-gradient(180deg,${P.card} 0%,${P.bg} 100%)`}}>
+<button onClick={()=>{if(window.confirm(“確定要離開共事嗎？”))onClose();}} style={{position:“absolute”,top:“calc(env(safe-area-inset-top,0px)+16px)”,left:16,background:“transparent”,border:“none”,color:P.sub,fontSize:15,cursor:“pointer”}}>✕ 離開</button>
+<div style={{fontSize:14,color:P.sub,marginBottom:4,letterSpacing:2}}>🧑‍💻 虛擬共事中</div>
+<div style={{fontSize:13,color:P.sub,marginBottom:40,opacity:0.7}}>{msg}</div>
+<div style={{fontSize:72,fontWeight:900,color:P.accent,fontFamily:“monospace”,letterSpacing:4}}>{formatClock(secondsLeft)}</div>
+<div style={{width:“80%”,height:8,background:P.tag,borderRadius:4,overflow:“hidden”,marginTop:30}}>
+<div style={{width:`${progress}%`,height:“100%”,background:`linear-gradient(90deg,${P.accent},${P.green})`,transition:“width 1s linear”,borderRadius:4}}/></div>
+<div style={{marginTop:40,display:“flex”,gap:16}}>
+<button onClick={()=>setIsRunning(r=>!r)} style={{…st.btn,background:P.tag,color:P.accent,width:60,height:60,borderRadius:30,fontSize:22,display:“flex”,alignItems:“center”,justifyContent:“center”}}>{isRunning?“⏸”:“▶️”}</button>
+<button onClick={()=>setSecondsLeft(0)} style={{…st.btn,background:P.accent,color:”#fff”,height:60,borderRadius:30,padding:“0 32px”,fontSize:16,fontWeight:700}}>結束共事</button>
+</div></div>);
+};
+
+/* ========== 強制放下：全螢幕自我照顧接管 ========== */
+const SelfCareTakeover=({preset,onComplete,onSnooze})=>{
+const[phase,setPhase]=useState(“intro”); // intro, countdown, checklist, done
+const[countdown,setCountdown]=useState(preset.defaultMin*60);
+const[checkDone,setCheckDone]=useState(new Set());
+const[msgIdx]=useState(()=>Math.floor(Math.random()*preset.messages.length));
+const[snoozed,setSnoozed]=useState(false);
+
+useEffect(()=>{
+if(phase!==“countdown”)return;
+if(countdown<=0){setPhase(“done”);playSound(‘complete’);return;}
+const t=setTimeout(()=>setCountdown(s=>s-1),1000);return()=>clearTimeout(t);
+},[phase,countdown]);
+
+// Play alarm sound periodically during intro
+useEffect(()=>{
+if(phase===“intro”){initAudio();playSound(‘alarm’);const t=setInterval(()=>playSound(‘alarm’),8000);return()=>clearInterval(t);}
+},[phase]);
+
+const formatClock=sec=>`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+const progress=countdown/(preset.defaultMin*60)*100;
+
+if(phase===“done”)return(
+<div style={{…st.app,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,padding:24,background:preset.bgGrad}}>
+<div style={{fontSize:72,marginBottom:20,animation:“gentleFloat 2s ease-in-out infinite”}}>{preset.emoji}</div>
+<div style={{fontSize:28,fontWeight:900,color:preset.color,marginBottom:12,fontFamily:”‘Noto Serif TC’, serif”}}>做得好！</div>
+<div style={{fontSize:16,color:P.sub,marginBottom:40,textAlign:“center”,lineHeight:1.6}}>你成功照顧了自己<br/>這就是最棒的自律</div>
+<button onClick={onComplete} style={{…st.btn,background:preset.color,color:”#fff”,padding:“16px 48px”,fontSize:18,fontWeight:700,borderRadius:30}}>回到主畫面</button>
+</div>);
+
+if(phase===“checklist”)return(
+<div style={{…st.app,display:“flex”,flexDirection:“column”,padding:24,background:preset.bgGrad}}>
+<div style={{textAlign:“center”,paddingTop:40,marginBottom:30}}>
+<div style={{fontSize:48,marginBottom:12}}>{preset.emoji}</div>
+<div style={{fontSize:20,fontWeight:900,color:preset.color,fontFamily:”‘Noto Serif TC’, serif”}}>{preset.title}</div>
+</div>
+<div style={{background:P.card,borderRadius:16,padding:20,border:`1px solid ${P.border}`,marginBottom:20}}>
+<div style={{fontSize:13,color:P.sub,fontWeight:700,marginBottom:14}}>準備清單</div>
+{preset.checklistItems.map((item,i)=>{const done=checkDone.has(i);return(
+<button key={i} onClick={()=>{const n=new Set(checkDone);if(done)n.delete(i);else n.add(i);setCheckDone(n);if(!done)playSound(‘tick’);}}
+style={{display:“flex”,alignItems:“center”,gap:12,width:“100%”,padding:“14px 16px”,marginBottom:8,background:done?`${preset.color}15`:P.bg,border:`2px solid ${done?preset.color:P.border}`,borderRadius:12,cursor:“pointer”,textAlign:“left”,transition:“all 0.2s”,fontFamily:“inherit”,fontSize:15}}>
+<div style={{width:28,height:28,borderRadius:14,border:`2px solid ${done?preset.color:P.border}`,background:done?preset.color:“transparent”,display:“flex”,alignItems:“center”,justifyContent:“center”,flexShrink:0,transition:“all 0.2s”}}>
+{done&&<span style={{color:”#fff”,fontSize:14,fontWeight:700}}>✓</span>}</div>
+<span style={{color:done?preset.color:P.text,fontWeight:done?600:400,textDecoration:done?“line-through”:“none”}}>{item}</span>
+</button>);})}
+</div>
+<button onClick={()=>{setPhase(“countdown”);setCountdown(preset.defaultMin*60);}} disabled={checkDone.size===0}
+style={{…st.btn,background:checkDone.size>0?preset.color:”#c8bfb5”,color:”#fff”,width:“100%”,padding:“16px”,fontSize:16,fontWeight:700,borderRadius:14}}>
+{checkDone.size===preset.checklistItems.length?“全部完成！開始計時”:“已完成 “+checkDone.size+” 項，開始計時”}
+</button>
+</div>);
+
+if(phase===“countdown”)return(
+<div style={{…st.app,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,padding:24,background:preset.bgGrad}}>
+<div style={{fontSize:64,marginBottom:20,animation:“gentleFloat 2s ease-in-out infinite”}}>{preset.emoji}</div>
+<div style={{fontSize:20,fontWeight:900,color:preset.color,marginBottom:8,fontFamily:”‘Noto Serif TC’, serif”}}>{preset.title}</div>
+<div style={{fontSize:14,color:P.sub,marginBottom:30}}>計時中⋯安心去做吧</div>
+<div style={{fontSize:68,fontWeight:900,color:preset.color,fontFamily:“monospace”,letterSpacing:4}}>{formatClock(countdown)}</div>
+<div style={{width:“75%”,height:8,background:P.tag,borderRadius:4,overflow:“hidden”,marginTop:24}}>
+<div style={{width:`${progress}%`,height:“100%”,background:preset.color,transition:“width 1s linear”,borderRadius:4}}/></div>
+<div style={{fontSize:13,color:P.sub,marginTop:12}}>{countdown>60?“慢慢來，不著急”:“快完成了！”}</div>
+<button onClick={()=>{setCountdown(0);}} style={{…st.btn,background:preset.color,color:”#fff”,padding:“14px 40px”,fontSize:16,fontWeight:700,borderRadius:30,marginTop:40}}>我完成了！</button>
+</div>);
+
+// Intro - urgent fullscreen takeover
+return(
+<div style={{…st.app,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,padding:24,background:preset.bgGrad,animation:“slideInFromTop 0.5s ease-out”}}>
+<div style={{fontSize:80,marginBottom:24,animation:“timerRing 1.5s ease-in-out infinite”}}>{preset.emoji}</div>
+<div style={{fontSize:28,fontWeight:900,color:preset.color,marginBottom:8,fontFamily:”‘Noto Serif TC’, serif”,textAlign:“center”,lineHeight:1.4}}>{preset.title}</div>
+<div style={{fontSize:16,color:P.sub,marginBottom:8,textAlign:“center”}}>{preset.subtitle}</div>
+<div style={{fontSize:15,color:preset.color,marginTop:12,marginBottom:40,textAlign:“center”,fontStyle:“italic”,padding:“0 20px”,lineHeight:1.6,animation:“slowBreathe 4s ease-in-out infinite”}}>
+「{preset.messages[msgIdx]}」</div>
+<div style={{display:“flex”,flexDirection:“column”,gap:12,width:“100%”,maxWidth:320}}>
+<button onClick={()=>setPhase(“checklist”)}
+style={{…st.btn,background:preset.color,color:”#fff”,width:“100%”,padding:“18px”,fontSize:18,fontWeight:700,borderRadius:16,animation:“urgentPulse 2s ease-in-out infinite”}}>
+好，我現在就去 →
+</button>
+{!snoozed&&<button onClick={()=>{setSnoozed(true);onSnooze?.();}}
+style={{…st.btn,background:“transparent”,color:P.sub,width:“100%”,padding:“12px”,fontSize:14,border:`1px solid ${P.border}`,borderRadius:14}}>
+再給我 10 分鐘…
+</button>}
+{snoozed&&<div style={{textAlign:“center”,fontSize:13,color:P.sub,padding:“8px”,background:P.tag,borderRadius:10}}>
+⏰ 好的！10 分鐘後會再提醒你。<br/>但現在就去的你會更快樂喔 💛</div>}
+</div>
+</div>);
+};
+
+/* ========== 防拖延：5分鐘啟動法全螢幕 ========== */
+const FiveMinuteStart=({task,onComplete,onCancel})=>{
+const[secondsLeft,setSecondsLeft]=useState(300); // 5 minutes
+const[isRunning,setIsRunning]=useState(true);
+const[extended,setExtended]=useState(false);
+
+useEffect(()=>{
+if(!isRunning)return;
+if(secondsLeft<=0){playSound(‘complete’);return;}
+const t=setTimeout(()=>setSecondsLeft(s=>s-1),1000);return()=>clearTimeout(t);
+},[secondsLeft,isRunning]);
+
+const formatClock=sec=>`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+const progress=(secondsLeft/(extended?600:300))*100;
+
+if(secondsLeft<=0)return(
+<div style={{…st.app,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,padding:24,background:`linear-gradient(160deg,${P.warmGlow} 0%,${P.card} 100%)`}}>
+<div style={{fontSize:72,marginBottom:20,animation:“gentleFloat 2s ease-in-out infinite”}}>🎉</div>
+<div style={{fontSize:28,fontWeight:900,color:P.accent,marginBottom:12,fontFamily:”‘Noto Serif TC’, serif”}}>五分鐘到了！</div>
+<div style={{fontSize:16,color:P.sub,marginBottom:8,textAlign:“center”,lineHeight:1.6}}>
+{task?`你剛剛做了「${task}」`:“你剛剛做了 5 分鐘”}<br/>這就是最棒的開始！
+</div>
+<div style={{fontSize:14,color:P.green,marginBottom:40}}>想繼續嗎？停下來也完全沒問題。</div>
+<div style={{display:“flex”,flexDirection:“column”,gap:12,width:“100%”,maxWidth:300}}>
+<button onClick={()=>{setSecondsLeft(600);setExtended(true);setIsRunning(true);}}
+style={{…st.btn,background:P.green,color:”#fff”,width:“100%”,padding:“16px”,fontSize:16,fontWeight:700,borderRadius:14}}>💪 我還想繼續！再 10 分鐘</button>
+<button onClick={onComplete}
+style={{…st.btn,background:P.accent,color:”#fff”,width:“100%”,padding:“16px”,fontSize:16,fontWeight:700,borderRadius:14}}>✓ 很好！先到這裡</button>
+</div>
+</div>);
+
+return(
+<div style={{…st.app,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,padding:24,background:`linear-gradient(180deg,${P.card} 0%,${P.bg} 100%)`}}>
+<button onClick={()=>{if(window.confirm(“確定要放棄嗎？就差一點點了！”))onCancel();}}
+style={{position:“absolute”,top:“calc(env(safe-area-inset-top,0px)+16px)”,left:16,background:“transparent”,border:“none”,color:P.sub,fontSize:15,cursor:“pointer”}}>✕ 離開</button>
+<div style={{fontSize:14,color:P.sub,marginBottom:4,fontWeight:600}}>⏱️ {extended?“延長模式”:“五分鐘啟動法”}</div>
+{task&&<div style={{fontSize:16,fontWeight:700,color:P.accent,marginBottom:8,fontFamily:”‘Noto Serif TC’, serif”}}>{task}</div>}
+<div style={{fontSize:13,color:P.sub,marginBottom:40,textAlign:“center”,lineHeight:1.5}}>
+只做 {extended?10:5} 分鐘就好。<br/>時間到了你可以選擇停下或繼續。</div>
+<div style={{fontSize:72,fontWeight:900,color:P.accent,fontFamily:“monospace”,letterSpacing:4}}>{formatClock(secondsLeft)}</div>
+<div style={{width:“80%”,height:8,background:P.tag,borderRadius:4,overflow:“hidden”,marginTop:30}}>
+<div style={{width:`${progress}%`,height:“100%”,background:`linear-gradient(90deg,${P.green},${P.accent})`,transition:“width 1s linear”,borderRadius:4}}/></div>
+<div style={{marginTop:16,fontSize:13,color:P.sub}}>{secondsLeft>240?“才剛開始，你做得到的！”:secondsLeft>120?“已經過一半了，繼續！”:secondsLeft>30?“快到了！你超棒！”:“最後衝刺！”}</div>
+<div style={{marginTop:40,display:“flex”,gap:16}}>
+<button onClick={()=>setIsRunning(r=>!r)} style={{…st.btn,background:P.tag,color:P.accent,width:60,height:60,borderRadius:30,fontSize:22,display:“flex”,alignItems:“center”,justifyContent:“center”}}>{isRunning?“⏸”:“▶️”}</button>
+<button onClick={()=>setSecondsLeft(0)} style={{…st.btn,background:P.green,color:”#fff”,height:60,borderRadius:30,padding:“0 32px”,fontSize:16,fontWeight:700}}>我做完了！</button>
+</div>
+</div>);
+};
+
+/* ========== 主應用 ========== */
+const App=()=>{
+const[data,setData]=useState(loadData);
+const[now,setNow]=useState(new Date());
+const[tab,setTab]=useState(“today”);
+const[newDL,setNewDL]=useState({name:””,date:””});
+const[newPending,setNewPending]=useState(””);
+const[newAlarm,setNewAlarm]=useState({label:””,type:“fixed”,time:””,interval:1,start:“09:00”,end:“21:00”});
+const[editPresetsMode,setEditPresetsMode]=useState(false);
+const[newPreset,setNewPreset]=useState({label:””,type:“fixed”,time:””,interval:1,start:“09:00”,end:“21:00”});
+const[newRoutine,setNewRoutine]=useState(emptyDraft(“weekly”));
+const[showRoutineForm,setShowRoutineForm]=useState(false);
+const[editingId,setEditingId]=useState(null);
+const[editDraft,setEditDraft]=useState({});
+const[editingFocus,setEditingFocus]=useState(null);
+const[focusDraft,setFocusDraft]=useState(null);
+const[activeTimer,setActiveTimer]=useState(null);
+const[timerCountdown,setTimerCountdown]=useState(null);
+const[firedAlarmsRef]=useState(()=>new Set());
+const[banner,setBanner]=useState(null);
+const[showBurst,setShowBurst]=useState(false);
+const[welcomeBack,setWelcomeBack]=useState(false);
+// Combined new states
+const[showSakura,setShowSakura]=useState(false);
+const[sakuraItems,setSakuraItems]=useState([]);
+const[petEating,setPetEating]=useState(false);
+const[petHeart,setPetHeart]=useState(false);
+const[newBadge,setNewBadge]=useState(null);
+const[ambientSound,setAmbientSound]=useState(“none”);
+const[activeMilestone,setActiveMilestone]=useState(null);
+const[activeBreathing,setActiveBreathing]=useState(null);
+const[activeBodyDouble,setActiveBodyDouble]=useState(null);
+const[nudgeText,setNudgeText]=useState(null);
+const[showMoodForm,setShowMoodForm]=useState(false);
+const[moodNote,setMoodNote]=useState(””);
+const[moodEmoji,setMoodEmoji]=useState(“😊”);
+const[bodyDoublingCounter]=useState(()=>800+Math.floor(Math.random()*600));
+// Self-care takeover & anti-procrastination
+const[activeSelfCare,setActiveSelfCare]=useState(null); // preset object
+const[activeFiveMin,setActiveFiveMin]=useState(null); // {task} or {}
+const[showSelfCareSetup,setShowSelfCareSetup]=useState(false);
+const[antiProcTip,setAntiProcTip]=useState(null);
+const selfCareSnoozedRef=useRef({}); // {presetId: snoozedUntilTimestamp}
+
+useEffect(()=>{const t=setInterval(()=>setNow(new Date()),1000);return()=>clearInterval(t);},[]);
+useEffect(()=>{saveData(data);},[data]);
+
+const lastDateRef=useRef(todayStr());
+useEffect(()=>{const today=todayStr();if(today!==lastDateRef.current){firedAlarmsRef.clear();lastDateRef.current=today;setData(d=>({…d,completedToday:[],anchor:””}));}},[now]);
+
+useEffect(()=>{const today=todayStr();if(data.lastAutoGenDate===today)return;const todayRoutines=getRoutinesForToday(data.routines);
+const existing=new Set(data.pendingItems.map(p=>p.text));
+const items=todayRoutines.filter(r=>!existing.has(r.label)).map(r=>({id:genId(),text:r.label,priority:“medium”,fromRoutine:r.id}));
+if(items.length>0||data.lastAutoGenDate!==today)setData(d=>({…d,pendingItems:[…items,…d.pendingItems],lastAutoGenDate:today}));},[]);
+
+useEffect(()=>{const lv=localStorage.getItem(“adhd_lastVisit”);const today=todayStr();
+if(lv&&lv!==today){setWelcomeBack(true);setTimeout(()=>setWelcomeBack(false),4000);}localStorage.setItem(“adhd_lastVisit”,today);},[]);
+
+useEffect(()=>{const today=todayStr();if(data.petLastFed!==today)setData(d=>({…d,petHappiness:Math.max(0,(d.petHappiness||50)-5)}));},[]);
+
+useEffect(()=>{const hh=String(now.getHours()).padStart(2,“0”),mm=String(now.getMinutes()).padStart(2,“0”),cur=`${hh}:${mm}`,dk=todayStr();
+(data.alarms||[]).forEach(a=>{const fk=`${dk}_${a.id}_${cur}`;if(a.enabled&&a.time===cur&&!firedAlarmsRef.has(fk)){firedAlarmsRef.add(fk);safeNotify(a.label);playSound(‘alarm’);setBanner(a.label);setTimeout(()=>setBanner(null),5000);}});
+// Self-care reminder trigger
+(data.selfCareReminders||[]).forEach(r=>{
+if(!r.enabled)return;const fk=`sc_${dk}_${r.id}_${cur}`;if(r.time===cur&&!firedAlarmsRef.has(fk)){
+const snoozedUntil=selfCareSnoozedRef.current[r.presetId]||0;
+if(Date.now()<snoozedUntil)return;
+firedAlarmsRef.add(fk);const preset=SELFCARE_PRESETS.find(p=>p.id===r.presetId);
+if(preset&&!activeSelfCare&&!activeTimer&&!activeBreathing&&!activeBodyDouble){initAudio();playSound(‘alarm’);setActiveSelfCare(preset);}
+}});
+},[now,data.alarms,data.selfCareReminders]);
+
+useEffect(()=>{const interval=setInterval(()=>{setActiveTimer(prev=>{if(!prev||!prev.isRunning||prev.isFinished)return prev;const cs=prev.template.steps[prev.stepIndex];if(cs.duration===0)return prev;
+if(prev.secondsLeft>1)return{…prev,secondsLeft:prev.secondsLeft-1};
+playSound(‘alarm’);safeNotify(`${cs.text} 時間到！`);const ni=prev.stepIndex+1;
+if(ni<prev.template.steps.length){const ns=prev.template.steps[ni];return{…prev,stepIndex:ni,secondsLeft:ns.duration,isRunning:ns.duration>0};}
+else{playSound(‘complete’);stopAmbient();return{…prev,isFinished:true,isRunning:false};}});},1000);return()=>clearInterval(interval);},[]);
+
+const checkBadges=useCallback(ud=>{
+const totalCompleted=ud.totalCompleted||Object.values(ud.completedHistory||{}).reduce((a,b)=>a+b,0);
+const streak=calcStreak(ud.completedHistory||{});
+const stats={totalCompleted,streak,forgiveCount:ud.forgiveCount||0,focusCompleted:ud.focusCompleted||0,petHappiness:ud.petHappiness||0,breatheCompleted:ud.breatheCompleted||0};
+const unlocked=ud.unlockedBadges||[];
+for(const badge of BADGES){if(!unlocked.includes(badge.id)&&badge.check(stats)){initAudio();playSound(‘badge’);setNewBadge(badge);return{…ud,unlockedBadges:[…unlocked,badge.id]};}}return ud;},[]);
+
+const upd=p=>setData(d=>{const next={…d,…p};return checkBadges(next);});
+
+const prepStart=()=>{if(!data.leaveTime)return null;const[h,m]=data.leaveTime.split(”:”).map(Number);const t=((h*60+m-(data.prepMinutes||0))%1440+1440)%1440;return`${String(Math.floor(t/60)).padStart(2,"0")}:${String(t%60).padStart(2,"0")}`;};
+const minsToLeave=()=>{if(!data.leaveTime)return null;const[h,m]=data.leaveTime.split(”:”).map(Number);return h*60+m-(now.getHours()*60+now.getMinutes());};
+const leaveCD=()=>{const d=minsToLeave();if(d===null)return null;if(d<0)return”已出發 ✓”;if(d===0)return”現在出門！”;return d>=60?`${Math.floor(d/60)} 小時 ${d%60} 分後出門`:`${d} 分鐘後出門`;};
+const prepCD=()=>{const ps=prepStart();if(!ps)return null;const[ph,pm]=ps.split(”:”).map(Number);const diff=ph*60+pm-(now.getHours()*60+now.getMinutes());const mtl=minsToLeave();if(diff<=0&&mtl!==null&&mtl>0)return”🔔 現在開始準備！”;if(diff>0)return`${diff} 分鐘後開始準備`;return null;};
+const urgent=(()=>{const d=minsToLeave();return d!==null&&d<=(data.prepMinutes||0)&&d>0;})();
+const daysLeft=ds=>{if(!ds)return null;const[y,m,d]=ds.split(”-”).map(Number);const target=new Date(y,m-1,d);const today=new Date();today.setHours(0,0,0,0);target.setHours(0,0,0,0);return Math.ceil((target-today)/86400000);};
+const addDL=()=>{if(!newDL.name.trim()||!newDL.date)return;upd({deadlines:[…data.deadlines,{id:genId(),…newDL}]});setNewDL({name:””,date:””});};
+const sortedDL=[…data.deadlines].sort((a,b)=>new Date(a.date)-new Date(b.date));
+const addPending=(text,priority=“medium”)=>{const t=(text||newPending).trim();if(!t)return;upd({pendingItems:[…data.pendingItems,{id:genId(),text:t,priority}]});if(!text)setNewPending(””);};
+
+const feedPet=()=>{if(data.petTreats<=0)return;initAudio();playSound(‘meow’);setPetEating(true);setPetHeart(true);setTimeout(()=>setPetEating(false),600);setTimeout(()=>setPetHeart(false),1200);
+upd({petTreats:data.petTreats-1,petHappiness:Math.min(100,(data.petHappiness||50)+8),petLastFed:todayStr()});};
+
+const completePending=id=>{
+const item=data.pendingItems.find(p=>p.id===id);initAudio();playSound(‘complete’);setShowBurst(true);
+setPetHeart(true);setTimeout(()=>setPetHeart(false),1200);
+const today=todayStr(),hist={…data.completedHistory};hist[today]=(hist[today]||0)+1;
+const newTotal=(data.totalCompleted||0)+1;
+const newCT=[…data.completedToday,{text:item?.text,time:new Date().toLocaleTimeString(“zh-TW”,{hour:“2-digit”,minute:“2-digit”})}];
+const todayCount=newCT.length;
+const milestone=MILESTONES.find(m=>m.count===todayCount);
+const routines=item?.fromRoutine?data.routines.map(r=>r.id===item.fromRoutine?{…r,lastDone:today}:r):data.routines;
+const base={pendingItems:data.pendingItems.filter(p=>p.id!==id),completedToday:newCT,completedHistory:hist,totalCompleted:newTotal,petTreats:(data.petTreats||0)+1,petHappiness:Math.min(100,(data.petHappiness||50)+3),petLastFed:today,routines};
+if(milestone&&!(data.milestoneSeen||[]).includes(`${today}_${todayCount}`)){
+setTimeout(()=>{playSound(‘milestone’);setActiveMilestone(milestone);},900);
+upd({…base,milestoneSeen:[…(data.milestoneSeen||[]),`${today}_${todayCount}`]});
+} else {
+upd(base);
+}
+};
+const updatePriority=(id,priority)=>upd({pendingItems:data.pendingItems.map(p=>p.id===id?{…p,priority}:p)});
+const sortedPending=[…data.pendingItems].sort((a,b)=>SORT_ORDER[a.priority]-SORT_ORDER[b.priority]);
+
+const forgiveIncomplete=()=>{
+const low=data.pendingItems.filter(p=>p.priority===“low”);if(low.length===0&&data.pendingItems.length===0)return;
+initAudio();playSound(‘sakura’);const items=low.length>0?low:data.pendingItems;
+setSakuraItems(items.map(i=>i.text));setShowSakura(true);
+const ids=new Set(items.map(i=>i.id));
+upd({pendingItems:data.pendingItems.filter(p=>!ids.has(p.id)),forgiveCount:(data.forgiveCount||0)+1});
+};
+
+const getRandomNudge=()=>{setNudgeText(GENTLE_NUDGES[Math.floor(Math.random()*GENTLE_NUDGES.length)]);setTimeout(()=>setNudgeText(null),6000);};
+
+const saveMoodLog=()=>{const entry={date:todayStr(),time:new Date().toLocaleTimeString(“zh-TW”,{hour:“2-digit”,minute:“2-digit”}),energy:data.todayEnergy,mood:moodEmoji,note:moodNote};upd({moodLog:[…data.moodLog,entry]});setMoodNote(””);setShowMoodForm(false);};
+
+// Alarms
+const addAlarm=()=>{if(!newAlarm.label.trim())return;safeRequestNotifPerm();let na=[…(data.alarms||[])];
+if(newAlarm.type===‘fixed’){if(!newAlarm.time)return;if(!na.some(a=>a.label===newAlarm.label&&a.time===newAlarm.time))na.push({id:genId(),label:newAlarm.label,time:newAlarm.time,enabled:true});}
+else{if(!newAlarm.interval||!newAlarm.start||!newAlarm.end)return;let[sh,sm]=newAlarm.start.split(’:’).map(Number),[eh,em]=newAlarm.end.split(’:’).map(Number);let cur=sh*60+sm,end=eh*60+em,int=Math.max(0.5,Number(newAlarm.interval))*60;
+while(cur<=end){let ts=`${String(Math.floor(cur/60)).padStart(2,'0')}:${String(cur%60).padStart(2,'0')}`;if(!na.some(a=>a.label===newAlarm.label&&a.time===ts))na.push({id:genId(),label:newAlarm.label,time:ts,enabled:true});cur+=int;}}
+upd({alarms:na});setNewAlarm({label:””,type:“fixed”,time:””,interval:1,start:“09:00”,end:“21:00”});};
+const clearAllAlarms=()=>upd({alarms:[]});
+const applyPreset=preset=>{safeRequestNotifPerm();let na=[…(data.alarms||[])];
+if(preset.type===‘fixed’){if(!na.some(a=>a.label===preset.label&&a.time===preset.time))na.push({id:genId(),label:preset.label,time:preset.time,enabled:true});}
+else{let[sh,sm]=preset.start.split(’:’).map(Number),[eh,em]=preset.end.split(’:’).map(Number);let cur=sh*60+sm,end=eh*60+em,int=Math.max(0.5,Number(preset.interval))*60;
+while(cur<=end){let ts=`${String(Math.floor(cur/60)).padStart(2,'0')}:${String(cur%60).padStart(2,'0')}`;if(!na.some(a=>a.label===preset.label&&a.time===ts))na.push({id:genId(),label:preset.label,time:ts,enabled:true});cur+=int;}}
+upd({alarms:na});};
+const addPreset=()=>{if(!newPreset.label.trim()||(newPreset.type===‘fixed’&&!newPreset.time)||(newPreset.type===‘interval’&&(!newPreset.interval||!newPreset.start||!newPreset.end)))return;upd({alarmPresets:[…data.alarmPresets,{id:`p_${genId()}`,…newPreset}]});setNewPreset({label:””,type:newPreset.type,time:””,interval:1,start:“09:00”,end:“21:00”});};
+const deletePreset=id=>upd({alarmPresets:data.alarmPresets.filter(p=>p.id!==id)});
+
+// Routines
+const grouped={daily:data.routines.filter(r=>r.period===“daily”),weekly:data.routines.filter(r=>r.period===“weekly”),monthly:data.routines.filter(r=>r.period===“monthly”),yearly:data.routines.filter(r=>r.period===“yearly”)};
+const canSave=d=>{if(!d.label.trim())return false;if(d.period===“weekly”&&(!d.weekdays||d.weekdays.length===0))return false;if(d.period===“monthly”&&(!d.monthdays||d.monthdays.length===0))return false;return true;};
+const addRoutine=()=>{if(!canSave(newRoutine))return;upd({routines:[…data.routines,{id:`c_${genId()}`,…newRoutine,lastDone:null}]});setNewRoutine(emptyDraft(“weekly”));setShowRoutineForm(false);};
+const deleteRoutine=id=>upd({routines:data.routines.filter(r=>r.id!==id)});
+const startEdit=r=>{setEditingId(r.id);setEditDraft({label:r.label,icon:r.icon,period:r.period,weekdays:r.weekdays||[],monthdays:r.monthdays||[1],month:r.month||“1月”});};
+const saveEdit=id=>{if(!canSave(editDraft))return;upd({routines:data.routines.map(r=>r.id===id?{…r,…editDraft}:r)});setEditingId(null);};
+
+// Focus
+const startFocusTimer=tpl=>{if(!tpl.steps||tpl.steps.length===0)return alert(“這個模板目前沒有任何步驟喔！”);initAudio();if(ambientSound!==‘none’)playAmbient(ambientSound);setTimerCountdown({template:tpl,count:3});};
+useEffect(()=>{if(!timerCountdown)return;if(timerCountdown.count<=0){const tpl=timerCountdown.template;setActiveTimer({template:tpl,stepIndex:0,secondsLeft:tpl.steps[0].duration,isRunning:tpl.steps[0].duration>0,isFinished:false});setTimerCountdown(null);return;}
+const t=setTimeout(()=>{playSound(‘tick’);setTimerCountdown(prev=>prev?{…prev,count:prev.count-1}:null);},1000);return()=>clearTimeout(t);},[timerCountdown]);
+const skipToNextStep=()=>{setActiveTimer(prev=>{if(!prev)return prev;const ni=prev.stepIndex+1;
+if(ni<prev.template.steps.length){const ns=prev.template.steps[ni];return{…prev,stepIndex:ni,secondsLeft:ns.duration,isRunning:ns.duration>0};}
+else{playSound(‘complete’);stopAmbient();setData(d=>checkBadges({…d,focusCompleted:(d.focusCompleted||0)+1,petTreats:(d.petTreats||0)+2,petHappiness:Math.min(100,(d.petHappiness||50)+5)}));return{…prev,isFinished:true,isRunning:false};}});};
+
+const openFocusEditor=(tpl=null)=>{const target=tpl?JSON.parse(JSON.stringify(tpl)):emptyFocusDraft();setEditingFocus(target.id);setFocusDraft(target);};
+const closeFocusEditor=()=>{setEditingFocus(null);setFocusDraft(null);};
+const saveFocusDraft=()=>{if(!focusDraft.title.trim())return;let arr=[…data.focusTemplates];const idx=arr.findIndex(t=>t.id===focusDraft.id);if(idx>=0)arr[idx]=focusDraft;else arr.push(focusDraft);upd({focusTemplates:arr});closeFocusEditor();};
+const deleteFocusTemplate=id=>upd({focusTemplates:data.focusTemplates.filter(t=>t.id!==id)});
+const focusMoveStep=(idx,dir)=>{const steps=[…focusDraft.steps];if(dir===-1&&idx>0)[steps[idx-1],steps[idx]]=[steps[idx],steps[idx-1]];else if(dir===1&&idx<steps.length-1)[steps[idx],steps[idx+1]]=[steps[idx+1],steps[idx]];setFocusDraft({…focusDraft,steps});};
+const focusAddStep=()=>setFocusDraft({…focusDraft,steps:[…focusDraft.steps,{id:`s_${genId()}`,text:””,duration:0}]});
+const focusRemoveStep=idx=>{const steps=[…focusDraft.steps];steps.splice(idx,1);setFocusDraft({…focusDraft,steps});};
+const focusUpdateStepTime=(idx,type,value)=>{const steps=[…focusDraft.steps];const total=steps[idx].duration||0;const cM=Math.floor(total/60),cS=total%60;let v=parseInt(value)||0;if(v<0)v=0;
+if(type===‘min’)steps[idx].duration=v*60+cS;else if(type===‘sec’){if(v>59)v=59;steps[idx].duration=cM*60+v;}else if(type===‘text’)steps[idx].text=value;setFocusDraft({…focusDraft,steps});};
+const getFocusTotalTime=()=>focusDraft?.steps.reduce((s,x)=>s+(parseInt(x.duration)||0),0)||0;
+
+const timeStr=now.toLocaleTimeString(“zh-TW”,{hour:“2-digit”,minute:“2-digit”});
+const dateStr=now.toLocaleDateString(“zh-TW”,{month:“long”,day:“numeric”,weekday:“long”});
+const completedCount=data.completedToday?.length||0;
+const streak=useMemo(()=>calcStreak(data.completedHistory||{}),[data.completedHistory]);
+const last7=useMemo(()=>getLast7Days(data.completedHistory||{}),[data.completedHistory]);
+const maxLast7=Math.max(…last7.map(d=>d.count),1);
+
+// ============ 全屏模式 ============
+if(activeSelfCare)return<SelfCareTakeover preset={activeSelfCare}
+onComplete={()=>{setActiveSelfCare(null);upd({petTreats:(data.petTreats||0)+1,petHappiness:Math.min(100,(data.petHappiness||50)+5)});}}
+onSnooze={()=>{selfCareSnoozedRef.current[activeSelfCare.id]=Date.now()+600000;setActiveSelfCare(null);}}/>;
+if(activeFiveMin)return<FiveMinuteStart task={activeFiveMin.task}
+onComplete={()=>{setActiveFiveMin(null);upd({procrastinationStarts:(data.procrastinationStarts||0)+1});}}
+onCancel={()=>setActiveFiveMin(null)}/>;
+if(activeBreathing)return<BreathingExercise pattern={activeBreathing} onClose={()=>setActiveBreathing(null)} onComplete={()=>setData(d=>checkBadges({…d,breatheCompleted:(d.breatheCompleted||0)+1}))}/>;
+if(activeBodyDouble)return<BodyDoubleTimer minutes={activeBodyDouble} onClose={()=>setActiveBodyDouble(null)}/>;
+
+if(timerCountdown)return(<div style={{…st.app,display:‘flex’,flexDirection:‘column’,alignItems:‘center’,justifyContent:‘center’,background:`linear-gradient(160deg,${P.warmGlow} 0%,${P.bg} 100%)`}}>
+<div style={{fontSize:14,color:P.sub,marginBottom:24,fontWeight:500}}>{timerCountdown.template.title}</div>
+<div style={{fontSize:120,fontWeight:900,color:P.accent,fontFamily:”‘Noto Serif TC’, serif”,animation:“countdownPulse 1s ease-in-out infinite”,lineHeight:1}}>{timerCountdown.count}</div>
+<div style={{fontSize:16,color:P.sub,marginTop:24}}>準備好了嗎？第一步：{timerCountdown.template.steps[0]?.text}</div>
+<div style={{fontSize:13,color:P.sub,marginTop:8,opacity:0.7}}>共 {timerCountdown.template.steps.length} 步驟</div></div>);
+
+if(activeTimer){
+if(activeTimer.isFinished)return(<div style={{…st.app,display:‘flex’,flexDirection:‘column’,alignItems:‘center’,justifyContent:‘center’,padding:24,background:`linear-gradient(160deg,${P.warmGlow} 0%,${P.card} 100%)`}}>
+<div style={{fontSize:72,marginBottom:20,animation:“gentleFloat 2s ease-in-out infinite”}}>🎉</div>
+<div style={{fontSize:28,fontWeight:900,color:P.accent,marginBottom:12,fontFamily:”‘Noto Serif TC’, serif”}}>太棒了！順利過關！</div>
+<div style={{fontSize:16,color:P.sub,marginBottom:16,textAlign:‘center’,lineHeight:1.6}}>你已成功完成「{activeTimer.template.title}」<br/><span style={{fontSize:14}}>每一小步都是勝利</span></div>
+<div style={{fontSize:14,color:P.orange,marginBottom:40,background:P.tag,padding:“8px 20px”,borderRadius:20}}>🐟 獲得 2 個貓草零食！</div>
+<button onClick={()=>{setActiveTimer(null);stopAmbient();}} style={{…st.btn,background:P.accent,color:’#fff’,padding:“16px 48px”,fontSize:18,fontWeight:700,borderRadius:30,boxShadow:“0 6px 20px rgba(90,74,58,0.25)”}}>完成返回</button></div>);
+const cs=activeTimer.template.steps[activeTimer.stepIndex],ns=activeTimer.template.steps[activeTimer.stepIndex+1];
+const fC=sec=>`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+const tS=cs.duration,prog=tS>0?((tS-activeTimer.secondsLeft)/tS)*100:100;
+return(<div style={{…st.app,padding:24,display:‘flex’,flexDirection:‘column’,background:`linear-gradient(180deg,${P.card} 0%,${P.bg} 100%)`}}>
+<div style={{display:‘flex’,justifyContent:‘space-between’,alignItems:‘center’,marginBottom:30,paddingTop:10}}>
+<button onClick={()=>{if(window.confirm(“確定要放棄？”)){setActiveTimer(null);stopAmbient();}}} style={{background:‘transparent’,border:‘none’,color:P.sub,fontSize:15,cursor:‘pointer’,padding:8}}>✕ 結束</button>
+<span style={{color:P.sub,fontSize:13,fontWeight:700}}>{activeTimer.template.icon} {activeTimer.stepIndex+1}/{activeTimer.template.steps.length}</span></div>
+<div style={{textAlign:“center”,marginBottom:12,display:“flex”,alignItems:“center”,justifyContent:“center”,gap:10,fontSize:13,color:P.sub}}>
+<span style={{animation:“writing 1.5s ease-in-out infinite”}}>✍️</span>
+<span>目前有 <strong style={{color:P.accent}}>{bodyDoublingCounter.toLocaleString()}</strong> 人正在和你一起專注</span></div>
+<div style={{flex:1,display:‘flex’,flexDirection:‘column’,alignItems:‘center’,justifyContent:‘center’}}>
+<div style={{fontSize:24,fontWeight:700,color:P.text,marginBottom:30,textAlign:‘center’,padding:“0 20px”,fontFamily:”‘Noto Serif TC’, serif”}}>{cs.text}</div>
+{cs.duration>0?(<div style={{display:‘flex’,flexDirection:‘column’,alignItems:‘center’,width:“100%”}}>
+<div style={{fontSize:68,fontWeight:900,color:P.accent,fontFamily:‘monospace’,letterSpacing:4}}>{fC(activeTimer.secondsLeft)}</div>
+<div style={{width:“75%”,height:8,background:P.tag,borderRadius:4,overflow:‘hidden’,marginTop:24}}><div style={{width:`${prog}%`,height:‘100%’,background:`linear-gradient(90deg,${P.accent},${P.accentLight})`,transition:‘width 1s linear’,borderRadius:4}}/></div></div>
+):(<div style={{width:“80%”,padding:40,display:‘flex’,alignItems:‘center’,justifyContent:‘center’,borderRadius:20,background:P.tag}}><div style={{fontSize:17,color:P.sub,textAlign:‘center’,lineHeight:1.6}}>沒有限制時間<br/>完成後請點擊「下一步」</div></div>)}
+<div style={{marginTop:44,display:‘flex’,gap:16,width:“100%”,justifyContent:‘center’}}>
+{cs.duration>0&&<button onClick={()=>setActiveTimer(p=>({…p,isRunning:!p.isRunning}))} style={{…st.btn,background:P.tag,color:P.accent,width:60,height:60,borderRadius:30,fontSize:22,display:‘flex’,alignItems:‘center’,justifyContent:‘center’}}>{activeTimer.isRunning?‘⏸’:‘▶️’}</button>}
+<button onClick={skipToNextStep} style={{…st.btn,background:P.accent,color:’#fff’,height:60,borderRadius:30,padding:“0 36px”,fontSize:17,fontWeight:700,display:‘flex’,alignItems:‘center’,gap:8,boxShadow:“0 4px 16px rgba(90,74,58,0.2)”}}>完成，下一步 ⏭</button></div>
+{ns&&<div style={{marginTop:36,color:P.sub,fontSize:14,background:P.tag,padding:“10px 20px”,borderRadius:20}}>👉 下一步：{ns.text} {ns.duration>0?`(${formatTimeZh(ns.duration)})`:”(不限時)”}</div>}
+</div>
+{/* 環境音浮動按鈕 */}
+<div style={{position:“fixed”,bottom:20,right:20,display:“flex”,gap:6}}>
+{AMBIENT_SOUNDS.filter(s=>s.id!==‘none’).map(s=>(<button key={s.id} onClick={()=>{initAudio();if(ambientSound===s.id){setAmbientSound(‘none’);stopAmbient();}else{setAmbientSound(s.id);playAmbient(s.id);}}} style={{…st.btn,width:40,height:40,borderRadius:20,fontSize:16,padding:0,background:ambientSound===s.id?P.accent:P.card,color:ambientSound===s.id?”#fff”:P.text,border:`1px solid ${P.border}`,boxShadow:“0 2px 8px rgba(0,0,0,0.1)”}}>{s.emoji}</button>))}</div>
+</div>);
+}
+
+// ============ 主介面 ============
+return(<div style={st.app}>
+<CompletionBurst show={showBurst} onDone={()=>setShowBurst(false)}/>
+<SakuraShredder show={showSakura} onDone={()=>setShowSakura(false)} items={sakuraItems}/>
+<MilestoneCelebration milestone={activeMilestone} onClose={()=>setActiveMilestone(null)}/>
+{newBadge&&<BadgeUnlockNotif badge={newBadge} onDone={()=>setNewBadge(null)}/>}
+
+```
+{welcomeBack&&<div style={{position:"fixed",top:0,left:0,right:0,zIndex:999,background:`linear-gradient(135deg,${P.accent},${P.accentLight})`,color:"#fff",padding:"calc(env(safe-area-inset-top,0px)+16px) 20px 16px",fontSize:17,textAlign:"center",fontWeight:700,boxShadow:"0 4px 20px rgba(0,0,0,.12)",animation:"slideUp 0.4s ease-out"}}>
+  歡迎回來！新的一天，全新開始 ✨{streak>1&&<div style={{fontSize:13,marginTop:4,opacity:0.9}}>🔥 你已經連續 {streak} 天完成任務了！</div>}</div>}
+
+{banner&&!welcomeBack&&<div onClick={()=>setBanner(null)} style={{position:"fixed",top:0,left:0,right:0,zIndex:999,background:P.accent,color:"#fff",padding:"calc(env(safe-area-inset-top,0px)+14px) 20px 14px",fontSize:16,textAlign:"center",fontWeight:700,boxShadow:"0 2px 12px rgba(0,0,0,.15)",cursor:"pointer"}}>⏰ {banner} <span style={{fontSize:12,opacity:0.7,marginLeft:8}}>點擊關閉</span></div>}
+
+{nudgeText&&<div style={{position:"fixed",bottom:80,left:"50%",transform:"translateX(-50%)",zIndex:998,background:P.accent,color:"#fff",padding:"14px 24px",borderRadius:20,fontSize:14,fontWeight:500,maxWidth:"85%",textAlign:"center",boxShadow:"0 8px 24px rgba(90,74,58,0.3)",animation:"slideUp 0.4s ease-out",lineHeight:1.5}}>💛 {nudgeText}</div>}
+
+{/* Header */}
+<div style={{padding:"calc(env(safe-area-inset-top,0px)+20px) 18px 14px",borderBottom:`1px solid ${P.border}`,background:`linear-gradient(180deg,${P.card} 0%,${P.bg} 100%)`}}>
+  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+    <div style={{flex:1}}>
+      <div style={{fontSize:24,fontWeight:900,letterSpacing:1,color:P.accent,fontFamily:"'Noto Serif TC', serif"}}>今日總覽</div>
+      <div style={{fontSize:13,color:P.sub,marginTop:4}}>{dateStr}</div>
+      {streak>0&&<div style={{fontSize:12,color:P.reward,fontWeight:700,marginTop:2}}>🔥 連續 {streak} 天</div>}
+    </div>
+    <div style={{textAlign:"right",display:"flex",alignItems:"flex-start",gap:16}}>
+      <div onClick={feedPet} style={{cursor:data.petTreats>0?"pointer":"default"}}><VirtualPet happiness={data.petHappiness} treats={data.petTreats} isEating={petEating} recentHeart={petHeart}/></div>
+      <div style={{textAlign:"right"}}>
+        <div style={{fontSize:28,fontWeight:700,color:P.accent,fontFamily:"monospace"}}>{timeStr}</div>
+        {completedCount>0&&<div style={{fontSize:12,color:P.green,fontWeight:600,marginTop:2}}>完成 {completedCount} 件 🎯</div>}
+      </div></div></div>
+
+  <div style={{display:"flex",gap:6,marginTop:14,overflowX:"auto",paddingBottom:4}}>
+    {[["today","📋 總覽"],["focus","⏳ 專注"],["selfcare","💛 自我照顧"],["routines","🔁 例行"],["alarms","⏰ 提醒"],["stats","📊 回顧"]].map(([k,l])=>(
+      <button key={k} onClick={()=>setTab(k)} style={{...st.btn,padding:"8px 16px",fontSize:13,flexShrink:0,fontWeight:600,background:tab===k?P.accent:"transparent",color:tab===k?"#fff":P.sub,border:tab===k?"none":`1px solid ${P.border}`}}>{l}</button>))}
+  </div></div>
+
+{/* ==================== 總覽 ==================== */}
+{tab==="today"&&<>
+  <div style={{...st.sec}}><div style={st.sB}><EnergyPicker value={data.todayEnergy} onChange={v=>upd({todayEnergy:v})}/></div></div>
+
+  {/* 🚨 強制放下：自我照顧快捷 */}
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🚨 強制放下</span><span style={{fontSize:12,color:P.sub}}>照顧自己優先</span></div>
+    <div style={st.sB}>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:12}}>
+        {SELFCARE_PRESETS.map(p=>(<button key={p.id} onClick={()=>{initAudio();setActiveSelfCare(p);}}
+          style={{...st.btn,flex:1,minWidth:70,padding:"12px 8px",fontSize:13,fontWeight:600,background:P.card,color:p.color,border:`2px solid ${p.color}40`,borderRadius:14,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+          <span style={{fontSize:24}}>{p.emoji}</span>{p.label}</button>))}</div>
+      <button onClick={()=>setShowSelfCareSetup(s=>!s)} style={{...st.btn,width:"100%",background:P.tag,color:P.sub,fontSize:12,padding:"8px"}}>
+        {showSelfCareSetup?"收起":"⏰ 設定定時提醒（到時間自動跳出全螢幕）"}</button>
+      {showSelfCareSetup&&<div style={{marginTop:12,background:P.tag,borderRadius:12,padding:12}}>
+        <div style={{fontSize:12,color:P.sub,marginBottom:8}}>設定時間到自動彈出全螢幕提醒</div>
+        {SELFCARE_PRESETS.map(p=>{const existing=(data.selfCareReminders||[]).find(r=>r.presetId===p.id);return(
+          <div key={p.id} style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+            <span style={{fontSize:16}}>{p.emoji}</span><span style={{flex:1,fontSize:13}}>{p.label}</span>
+            {existing?<>
+              <span style={{fontSize:13,fontFamily:"monospace",color:P.accent}}>{existing.time}</span>
+              <button onClick={()=>upd({selfCareReminders:data.selfCareReminders.map(r=>r.id===existing.id?{...r,enabled:!r.enabled}:r)})}
+                style={{...st.btn,background:existing.enabled?P.green:P.tag,color:existing.enabled?"#fff":P.sub,padding:"4px 10px",fontSize:11,borderRadius:12}}>{existing.enabled?"開":"關"}</button>
+              <button onClick={()=>upd({selfCareReminders:data.selfCareReminders.filter(r=>r.id!==existing.id)})}
+                style={{...st.btn,background:"#fbe9e2",color:P.danger,padding:"4px 8px",fontSize:11}}>✕</button>
+            </>:<>
+              <input type="time" style={{...st.inp,width:100,padding:"6px 8px",fontSize:13}} onChange={e=>{if(!e.target.value)return;
+                upd({selfCareReminders:[...(data.selfCareReminders||[]),{id:genId(),presetId:p.id,time:e.target.value,enabled:true}]});safeRequestNotifPerm();}}/>
+            </>}
+          </div>);})}
+      </div>}
+    </div></div>
+
+  {/* 🎯 防拖延工具箱 */}
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🎯 防拖延</span>
+    <button onClick={()=>{const tip=ANTI_PROCRASTINATION_TIPS[Math.floor(Math.random()*ANTI_PROCRASTINATION_TIPS.length)];setAntiProcTip(tip);setTimeout(()=>setAntiProcTip(null),8000);}}
+      style={{...st.btn,background:P.warmGlow,color:P.orange,padding:"5px 12px",fontSize:12,fontWeight:600,border:`1px solid ${P.orange}30`}}>💡 給我一招</button></div>
+    <div style={st.sB}>
+      {antiProcTip&&<div style={{background:`${P.orange}10`,border:`1px solid ${P.orange}30`,borderRadius:12,padding:"12px 14px",marginBottom:12,fontSize:14,color:P.orange,lineHeight:1.5,animation:"fadeIn 0.3s ease-out"}}>{antiProcTip}</div>}
+      <button onClick={()=>{initAudio();setActiveFiveMin({task:sortedPending[0]?.text||""});}}
+        style={{...st.btn,width:"100%",background:`linear-gradient(135deg,${P.accent},${P.accentLight})`,color:"#fff",padding:"16px",fontSize:16,fontWeight:700,borderRadius:14,display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+        ⏱️ 五分鐘啟動法 — 只做 5 分鐘就好
+      </button>
+      <div style={{fontSize:12,color:P.sub,textAlign:"center",marginTop:6}}>通常一旦開始就停不下來 ✨</div>
+    </div></div>
+
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>⚓ 今日錨點</span><span style={{fontSize:12,color:P.sub}}>最重要的一件事</span></div>
+    <div style={st.sB}><input style={{...st.inp,fontSize:16,fontWeight:700,borderColor:data.anchor?P.accent:P.border}} placeholder="今天有什麼不能錯過的事？" value={data.anchor} onChange={e=>upd({anchor:e.target.value})}/></div></div>
+
+  <div style={{...st.sec,border:urgent?`2px solid ${P.danger}`:`1px solid ${P.border}`}}>
+    <div style={st.sH}><span style={st.sT}>🚪 出門時間</span>{leaveCD()&&<span style={{fontSize:13,color:urgent?P.danger:P.green,fontWeight:700}}>{leaveCD()}</span>}</div>
+    <div style={st.sB}>
+      <div style={{marginBottom:14}}><input type="time" style={{...st.inp,maxWidth:160}} value={data.leaveTime} onChange={e=>upd({leaveTime:e.target.value})}/></div>
+      <div style={{marginBottom:12}}><div style={{fontSize:12,color:P.sub,marginBottom:6}}>準備所需時間</div>
+        <div style={{display:"flex",flexWrap:"wrap",gap:6,alignItems:"center"}}>
+          {[15,30,45,60].map(m=>(<button key={m} onClick={()=>upd({prepMinutes:m})} style={{...st.btn,padding:"6px 12px",fontSize:14,background:data.prepMinutes===m?P.accent:P.card,color:data.prepMinutes===m?"#fff":P.text,border:`1px solid ${data.prepMinutes===m?P.accent:P.border}`}}>{m} 分</button>))}
+          <div style={{display:"flex",alignItems:"center",gap:4,marginLeft:4}}><input type="number" style={{...st.inp,width:60,padding:"6px",textAlign:"center",fontSize:14}} value={data.prepMinutes} onChange={e=>{const v=parseInt(e.target.value);upd({prepMinutes:isNaN(v)?0:Math.max(0,v)});}}/><span style={{fontSize:13,color:P.sub}}>分</span></div></div></div>
+      {prepStart()&&<div style={{background:urgent?"#fbe9e2":P.tag,borderRadius:10,padding:"10px 14px",fontSize:14,marginTop:14}}><span style={{color:P.sub}}>開始準備：</span><strong style={{color:urgent?P.danger:P.accent}}>{prepStart()}</strong>{prepCD()&&<div style={{marginTop:4,fontSize:13,color:urgent?P.danger:P.sub}}>{prepCD()}</div>}</div>}
+    </div></div>
+
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>📅 截止倒數</span></div>
+    <div style={st.sB}>
+      <div style={{...st.row,marginBottom:12,flexWrap:"wrap"}}><input style={{...st.inp,flex:2,minWidth:100}} placeholder="事項名稱" value={newDL.name} onChange={e=>setNewDL(d=>({...d,name:e.target.value}))} onKeyDown={e=>e.key==="Enter"&&addDL()}/><input type="date" style={{...st.inp,flex:1,minWidth:100}} value={newDL.date} onChange={e=>setNewDL(d=>({...d,date:e.target.value}))}/><button style={{...st.btn,background:P.accent,color:"#fff",whiteSpace:"nowrap"}} onClick={addDL}>新增</button></div>
+      {sortedDL.map((dl,i)=>(<div key={dl.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 0",borderTop:i>0?`1px solid ${P.border}`:"none"}}><div style={{flex:1,fontSize:15}}>{dl.name}</div><div style={{...st.row,gap:8}}><DayBadge n={daysLeft(dl.date)}/><button style={{...st.btn,background:"#fbe9e2",color:P.danger,padding:"5px 10px",fontSize:12}} onClick={()=>upd({deadlines:data.deadlines.filter(d=>d.id!==dl.id)})}>✕</button></div></div>))}
+    </div></div>
+
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>📦 暫放區</span>
+    <div style={{display:"flex",gap:8,alignItems:"center"}}><button onClick={getRandomNudge} style={{...st.btn,background:P.warmGlow,color:P.orange,padding:"5px 12px",fontSize:12,fontWeight:600,border:`1px solid ${P.orange}30`}}>🫂 卡住了？</button><span style={{fontSize:12,color:P.sub}}>{sortedPending.length} 項</span></div></div>
+    <div style={st.sB}>
+      <div style={{...st.row,marginBottom:14,gap:8}}><input style={{...st.inp,flex:1}} placeholder="腦中有什麼？按 Enter 直接丟入…" value={newPending} onChange={e=>setNewPending(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")addPending();}}/><button style={{...st.btn,background:P.accent,color:"#fff",whiteSpace:"nowrap",padding:"10px 16px"}} onClick={()=>addPending()}>丟入</button></div>
+      {sortedPending.map((item,i)=>(<div key={item.id} className="card-enter" style={{display:"flex",alignItems:"center",gap:10,padding:"11px 0",borderTop:i>0?`1px solid ${P.border}`:"none"}}><PriBadge value={item.priority} onChange={v=>updatePriority(item.id,v)}/><span style={{flex:1,fontSize:14}}>{item.text}</span>
+        <button title="五分鐘啟動" onClick={()=>{initAudio();setActiveFiveMin({task:item.text});}} style={{...st.btn,background:P.warmGlow,color:P.orange,padding:"6px 8px",fontSize:12,borderRadius:20,whiteSpace:"nowrap",border:`1px solid ${P.orange}30`}}>⏱️</button>
+        <button style={{...st.btn,background:P.green,color:"#fff",padding:"6px 14px",fontSize:13,fontWeight:600,whiteSpace:"nowrap",borderRadius:20}} onClick={()=>completePending(item.id)}>完成 ✓</button></div>))}
+      {sortedPending.length===0&&<div style={{textAlign:"center",padding:"20px 0",color:P.sub,fontSize:14}}>{completedCount>0?`今天已完成 ${completedCount} 件事！太厲害了 🌟`:"沒有待處理的事項"}</div>}
+      {sortedPending.length>0&&<div style={{marginTop:12,paddingTop:12,borderTop:`1px solid ${P.border}`}}>
+        <button onClick={forgiveIncomplete} style={{...st.btn,width:"100%",background:`linear-gradient(135deg,${P.sakuraLight},${P.warmGlow})`,color:P.sakura,border:`1.5px solid ${P.sakura}`,padding:"12px",fontSize:14,fontWeight:600,borderRadius:14}}>
+          🌸 一鍵原諒 — 今天這樣就很好了
+          <div style={{fontSize:11,marginTop:2,opacity:0.7,fontWeight:400}}>{data.pendingItems.filter(p=>p.priority==="low").length>0?`會釋放 ${data.pendingItems.filter(p=>p.priority==="low").length} 項「之後」的事`:"會釋放所有待處理事項"}</div>
+        </button></div>}
+    </div></div>
+
+  {data.completedToday?.length>0&&<div style={st.sec}><div style={st.sH}><span style={st.sT}>✅ 今日已完成</span><span style={{fontSize:13,color:P.green,fontWeight:700}}>{data.completedToday.length} 件</span></div>
+    <div style={st.sB}>{data.completedToday.map((c,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderTop:i>0?`1px solid ${P.border}`:"none",opacity:0.75}}><span style={{color:P.green,fontSize:16}}>✓</span><span style={{flex:1,fontSize:14,textDecoration:"line-through",color:P.sub}}>{c.text}</span><span style={{fontSize:12,color:P.sub}}>{c.time}</span></div>))}</div></div>}
+
+  <div style={{margin:"20px 14px 0"}}><button onClick={()=>{if(window.confirm("確定要清空暫放區？"))upd({pendingItems:[],anchor:""});}} style={{...st.btn,background:P.tag,color:P.sub,width:"100%",padding:"12px",fontSize:13}}>🧹 清空暫放區，重新開始</button></div>
+</>}
+
+{/* ==================== 專注 ==================== */}
+{tab==="focus"&&<div>
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🧑‍💻 虛擬共事</span></div>
+    <div style={st.sB}><div style={{color:P.sub,fontSize:13,marginBottom:12,lineHeight:1.5}}>模擬「有人陪你一起做」的感覺。設定時間，專心做你的事。</div>
+      <div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:12}}>{[15,25,45,60].map(m=>(<button key={m} onClick={()=>upd({bodyDoubleMinutes:m})} style={{...st.btn,padding:"8px 18px",fontSize:14,background:data.bodyDoubleMinutes===m?P.accent:P.card,color:data.bodyDoubleMinutes===m?"#fff":P.text,border:`1px solid ${data.bodyDoubleMinutes===m?P.accent:P.border}`,fontWeight:600}}>{m} 分鐘</button>))}</div>
+      <button onClick={()=>{initAudio();setActiveBodyDouble(data.bodyDoubleMinutes);}} style={{...st.btn,background:P.accent,color:"#fff",width:"100%",padding:"14px",fontSize:16,fontWeight:700,borderRadius:14}}>🚀 開始共事 ({data.bodyDoubleMinutes} 分鐘)</button></div></div>
+
+  {/* 環境音設定 */}
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🎧 專注氛圍</span></div>
+    <div style={st.sB}><div style={{display:"flex",flexWrap:"wrap",gap:6}}>{AMBIENT_SOUNDS.map(s=>(<button key={s.id} onClick={()=>{initAudio();setAmbientSound(s.id);if(s.id!=='none')playAmbient(s.id);else stopAmbient();}} style={{...st.btn,padding:"6px 12px",fontSize:13,background:ambientSound===s.id?P.accent:P.card,color:ambientSound===s.id?"#fff":P.text,border:`1px solid ${ambientSound===s.id?P.accent:P.border}`}}>{s.emoji} {s.label}</button>))}</div></div></div>
+
+  {!editingFocus&&<div style={st.sec}>
+    <div style={st.sH}><span style={st.sT}>⏳ 步驟拆解定時器</span><button onClick={()=>openFocusEditor()} style={{background:'transparent',border:'none',color:P.sub,fontSize:14,fontWeight:700,cursor:'pointer'}}>＋ 新增</button></div>
+    <div style={st.sB}>
+      <div style={{color:P.sub,fontSize:13,marginBottom:10}}>對抗完美主義！時間到會強制響鈴換下一步。</div>
+      <div style={{marginBottom:16}}><EnergyPicker value={data.todayEnergy} onChange={v=>upd({todayEnergy:v})}/>
+        {data.todayEnergy<3&&<div style={{fontSize:12,color:P.sub,marginTop:8,background:P.tag,padding:"8px 12px",borderRadius:8}}>💡 依你目前的電量，建議先試標示「{ENERGY_LEVELS.find(e=>e.value===data.todayEnergy)?.emoji}」以下的模板</div>}</div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {data.focusTemplates.map(tpl=>{const isR=(tpl.energyLevel||2)<=data.todayEnergy;return(
+          <div key={tpl.id} style={{display:"flex",gap:10,alignItems:"stretch",opacity:isR?1:0.5,transition:"opacity 0.3s"}}>
+            <div style={{flex:1,border:`2px solid ${isR?P.accent+'40':P.border}`,borderRadius:14,padding:16,display:"flex",gap:14,background:P.card}}>
+              <div style={{fontSize:32,display:"flex",alignItems:"center"}}>{tpl.icon}</div>
+              <div><div style={{fontWeight:700,fontSize:16,marginBottom:4,color:P.accent,display:"flex",alignItems:"center",gap:6}}>{tpl.title}<span style={{fontSize:11,background:P.tag,padding:"2px 8px",borderRadius:10,color:P.sub}}>{ENERGY_LEVELS.find(e=>e.value===(tpl.energyLevel||2))?.emoji}</span></div>
+                <div style={{color:P.sub,fontSize:13,lineHeight:1.4}}>{tpl.desc}</div></div></div>
+            <div style={{display:"flex",flexDirection:"column",gap:6,width:48}}>
+              <button onClick={()=>startFocusTimer(tpl)} style={{flex:1.5,background:isR?P.accent:P.tag,color:isR?"white":P.sub,border:"none",borderRadius:10,fontSize:20,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>▶</button>
+              <div style={{display:"flex",gap:4,flex:1}}><button onClick={()=>openFocusEditor(tpl)} style={{flex:1,background:P.tag,border:"none",borderRadius:8,fontSize:12,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✏️</button><button onClick={()=>deleteFocusTemplate(tpl.id)} style={{flex:1,background:"#fbe9e2",border:"none",borderRadius:8,fontSize:12,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button></div></div></div>);})}
+      </div></div></div>}
+
+  {editingFocus&&focusDraft&&<div style={st.sec}>
+    <div style={{...st.sH,borderBottom:"none",paddingBottom:0}}><span style={st.sT}>編輯專注模板</span><span style={{fontSize:13,color:P.sub}}>總計：{formatTimeZh(getFocusTotalTime())}</span></div>
+    <div style={st.sB}>
+      <div style={{display:"flex",gap:8,marginBottom:12}}><input value={focusDraft.icon} onChange={e=>setFocusDraft({...focusDraft,icon:e.target.value})} style={{...st.inp,width:56,height:46,padding:0,textAlign:"center",fontSize:22,background:P.tag}} maxLength="2"/><input placeholder="模板名稱" value={focusDraft.title} onChange={e=>setFocusDraft({...focusDraft,title:e.target.value})} style={{...st.inp,flex:1,fontWeight:700,background:P.tag}}/></div>
+      <input placeholder="描述" value={focusDraft.desc} onChange={e=>setFocusDraft({...focusDraft,desc:e.target.value})} style={{...st.inp,width:"100%",marginBottom:12,background:P.tag,fontSize:14}}/>
+      <div style={{marginBottom:16}}><div style={{fontSize:12,color:P.sub,marginBottom:6}}>適合的能量等級</div><div style={{display:"flex",gap:6}}>{ENERGY_LEVELS.map(lv=>(<button key={lv.value} onClick={()=>setFocusDraft({...focusDraft,energyLevel:lv.value})} style={{...st.btn,padding:"6px 14px",fontSize:13,background:focusDraft.energyLevel===lv.value?lv.color:P.tag,color:focusDraft.energyLevel===lv.value?"#fff":P.sub,borderRadius:20}}>{lv.emoji} {lv.label}</button>))}</div></div>
+      <div style={{fontSize:13,color:P.sub,fontWeight:700,marginBottom:10}}>步驟拆解</div>
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+        {focusDraft.steps.map((step,idx)=>(<div key={step.id} style={{display:"flex",alignItems:"center",gap:8,background:P.tag,padding:"10px 12px",borderRadius:12,flexWrap:"wrap"}}>
+          <div style={{display:"flex",flexDirection:"column",gap:2}}><button onClick={()=>focusMoveStep(idx,-1)} disabled={idx===0} style={{background:P.accentLight,color:"white",border:"none",borderRadius:4,width:24,height:20,fontSize:12,cursor:idx===0?"default":"pointer",opacity:idx===0?0.3:1}}>▲</button><button onClick={()=>focusMoveStep(idx,1)} disabled={idx===focusDraft.steps.length-1} style={{background:P.accentLight,color:"white",border:"none",borderRadius:4,width:24,height:20,fontSize:12,cursor:idx===focusDraft.steps.length-1?"default":"pointer",opacity:idx===focusDraft.steps.length-1?0.3:1}}>▼</button></div>
+          <input placeholder="步驟名稱" value={step.text} onChange={e=>focusUpdateStepTime(idx,'text',e.target.value)} style={{...st.inp,flex:1,minWidth:120,padding:"8px 10px",background:P.card}}/>
+          <div style={{display:"flex",alignItems:"center",background:P.card,borderRadius:8,border:`1px solid ${P.border}`,padding:"2px 8px",whiteSpace:"nowrap"}}><input type="number" value={Math.floor(step.duration/60)} onChange={e=>focusUpdateStepTime(idx,'min',e.target.value)} style={{width:30,border:"none",background:"transparent",textAlign:"center",fontSize:15,outline:"none",padding:"6px 0",color:P.text}} min="0"/><span style={{fontSize:13,color:P.sub}}>分</span><input type="number" value={step.duration%60} onChange={e=>focusUpdateStepTime(idx,'sec',e.target.value)} style={{width:30,border:"none",background:"transparent",textAlign:"center",fontSize:15,outline:"none",padding:"6px 0",color:P.text}} min="0" max="59"/><span style={{fontSize:13,color:P.sub}}>秒</span></div>
+          <button onClick={()=>focusRemoveStep(idx)} style={{background:"transparent",border:"none",color:P.danger,fontSize:16,cursor:"pointer",padding:"0 4px"}}>✕</button></div>))}</div>
+      <button style={{width:"100%",border:`1.5px dashed ${P.sub}`,background:"transparent",padding:"12px",borderRadius:12,color:P.sub,fontSize:14,cursor:"pointer",fontWeight:700}} onClick={focusAddStep}>＋ 新增步驟</button>
+      <div style={{display:"flex",gap:12,marginTop:20}}><button style={{...st.btn,flex:1,background:P.accent,color:"#fff",fontWeight:700,padding:"12px"}} onClick={saveFocusDraft}>儲存模板</button><button style={{...st.btn,flex:1,background:P.tag,color:P.accent,padding:"12px"}} onClick={closeFocusEditor}>取消</button></div>
+    </div></div>}
+</div>}
+
+{/* ==================== 自我照顧 ==================== */}
+{tab==="selfcare"&&<div>
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🫁 呼吸練習</span><span style={{fontSize:12,color:P.sub}}>感到焦慮或 overwhelm 時</span></div>
+    <div style={st.sB}><div style={{display:"flex",flexDirection:"column",gap:10}}>
+      {BREATH_PATTERNS.map(bp=>(<button key={bp.id} onClick={()=>{initAudio();setActiveBreathing(bp);}} style={{display:"flex",alignItems:"center",gap:14,padding:"14px 16px",background:P.card,border:`1.5px solid ${P.green}30`,borderRadius:14,cursor:"pointer",textAlign:"left"}}>
+        <div style={{width:44,height:44,borderRadius:"50%",background:`${P.green}15`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>🧘</div>
+        <div style={{flex:1}}><div style={{fontWeight:700,fontSize:15,color:P.text,marginBottom:2}}>{bp.name}</div><div style={{fontSize:12,color:P.sub}}>{bp.desc}</div></div>
+        <div style={{fontSize:12,color:P.green,fontWeight:600,whiteSpace:"nowrap"}}>{bp.cycles} 輪</div></button>))}</div></div></div>
+
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🌈 多巴胺菜單</span><span style={{fontSize:12,color:P.sub}}>快樂充電站</span></div>
+    <div style={st.sB}><div style={{color:P.sub,fontSize:13,marginBottom:14,lineHeight:1.5}}>低能量或感覺無聊時，從這裡選一個「健康的快樂」來做。</div>
+      {Object.entries(DOPAMINE_CATS).map(([ck,cl])=>{const items=data.dopamineMenu.filter(d=>d.category===ck);if(items.length===0)return null;return(
+        <div key={ck} style={{marginBottom:16}}><div style={{fontSize:12,color:P.sub,fontWeight:700,marginBottom:8,letterSpacing:1}}>{cl}</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:8}}>{items.map(item=>(<button key={item.id} style={{...st.btn,background:P.warmGlow,color:P.text,border:`1px solid ${P.border}`,padding:"10px 14px",fontSize:13,fontWeight:500,borderRadius:12,display:"flex",alignItems:"center",gap:6,lineHeight:1.3}}>
+            <span style={{fontSize:18}}>{item.emoji}</span><div style={{textAlign:"left"}}><div>{item.label}</div><div style={{fontSize:11,color:P.sub}}>{item.minutes} 分鐘</div></div></button>))}</div></div>);})}
+      <button onClick={()=>{const items=data.dopamineMenu;const r=items[Math.floor(Math.random()*items.length)];if(r)setNudgeText(`試試看：${r.emoji} ${r.label}（${r.minutes} 分鐘）`);}} style={{...st.btn,width:"100%",background:`linear-gradient(135deg,${P.orange}20,${P.reward}20)`,color:P.orange,padding:"14px",fontSize:14,fontWeight:700,borderRadius:14,border:`1px solid ${P.orange}30`,marginTop:4}}>🎲 隨機來一個！</button>
+    </div></div>
+
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>📝 心情記錄</span><button onClick={()=>setShowMoodForm(f=>!f)} style={{...st.btn,background:showMoodForm?P.tag:P.accent,color:showMoodForm?P.accent:"#fff",padding:"6px 14px",fontSize:13}}>{showMoodForm?"取消":"＋ 記錄"}</button></div>
+    <div style={st.sB}>
+      {showMoodForm&&<div style={{background:P.tag,borderRadius:12,padding:14,marginBottom:16}}>
+        <div style={{fontSize:13,color:P.sub,marginBottom:8}}>現在感覺如何？</div>
+        <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>{["😊","😌","😐","😤","😢","😴","🥳","😰"].map(em=>(<button key={em} onClick={()=>setMoodEmoji(em)} style={{...st.btn,padding:"8px 12px",fontSize:22,background:moodEmoji===em?P.accent:P.card,borderRadius:12,border:`2px solid ${moodEmoji===em?P.accent:"transparent"}`}}>{em}</button>))}</div>
+        <textarea style={{...st.inp,height:60,resize:"none",marginBottom:10}} placeholder="想說什麼？（選填）" value={moodNote} onChange={e=>setMoodNote(e.target.value)}/>
+        <button onClick={saveMoodLog} style={{...st.btn,background:P.accent,color:"#fff",width:"100%",fontWeight:700}}>儲存心情</button></div>}
+      {data.moodLog.slice(-5).reverse().map((entry,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderTop:i>0?`1px solid ${P.border}`:"none"}}><span style={{fontSize:24}}>{entry.mood}</span><div style={{flex:1}}>{entry.note&&<div style={{fontSize:13,color:P.text}}>{entry.note}</div>}<div style={{fontSize:11,color:P.sub}}>{entry.date} {entry.time} · {ENERGY_LEVELS.find(e=>e.value===entry.energy)?.emoji}</div></div></div>))}
+      {data.moodLog.length===0&&!showMoodForm&&<div style={{textAlign:"center",padding:"16px 0",color:P.sub,fontSize:13}}>還沒有記錄，試試看記下現在的心情吧！</div>}
+    </div></div>
+</div>}
+
+{/* ==================== 例行 ==================== */}
+{tab==="routines"&&<div style={st.sec}>
+  <div style={st.sH}><span style={st.sT}>🔁 例行事項</span><button onClick={()=>{setShowRoutineForm(v=>!v);setEditingId(null);}} style={{...st.btn,background:showRoutineForm?P.tag:P.accent,color:showRoutineForm?P.accent:"#fff",padding:"6px 14px",fontSize:13}}>{showRoutineForm?"取消":"＋ 自訂"}</button></div>
+  <div style={st.sB}>
+    {showRoutineForm&&<div style={{background:P.tag,borderRadius:12,padding:14,marginBottom:18}}><div style={{fontSize:13,color:P.sub,fontWeight:700,marginBottom:10}}>新增例行事項</div><RoutineFields draft={newRoutine} setDraft={setNewRoutine}/><button style={{...st.btn,background:canSave(newRoutine)?P.accent:"#c8bfb5",color:"#fff",width:"100%",marginTop:4}} onClick={addRoutine}>確認新增</button></div>}
+
+    {(()=>{const todayRoutines=getRoutinesForToday(data.routines);if(todayRoutines.length===0)return null;return(
+      <div style={{marginBottom:20}}><div style={{fontSize:12,color:P.green,fontWeight:700,marginBottom:10,letterSpacing:1,display:"flex",alignItems:"center",gap:6}}><span style={{width:8,height:8,borderRadius:4,background:P.green,display:"inline-block"}}/>今日應做</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>{todayRoutines.map(r=>{const inP=data.pendingItems.some(p=>p.fromRoutine===r.id||p.text===r.label);const done=data.completedToday?.some(c=>c.text===r.label);return(
+          <button key={r.id} onClick={()=>{if(!inP&&!done)addPending(r.label,"medium");}} style={{...st.btn,display:"flex",alignItems:"center",gap:10,padding:"12px 16px",fontSize:14,justifyContent:"flex-start",textAlign:"left",background:done?P.green:inP?P.tag:P.card,color:done?"#fff":P.text,border:`1px solid ${done?P.green:inP?P.accent:P.border}`,opacity:done?0.7:1}}>
+            <span style={{fontSize:20}}>{r.icon}</span><div><div style={{fontWeight:600}}>{r.label}</div>{r.lastDone&&<div style={{fontSize:11,color:done?"rgba(255,255,255,0.7)":P.sub,marginTop:2}}>上次：{r.lastDone}</div>}</div>
+            {done&&<span style={{marginLeft:"auto",fontSize:14}}>✓</span>}{inP&&!done&&<span style={{marginLeft:"auto",fontSize:12,color:P.accent}}>已排入</span>}</button>);})}</div></div>);})()}
+
+    {Object.entries(grouped).map(([period,items])=>items.length===0?null:(
+      <div key={period} style={{marginBottom:20}}><div style={{fontSize:12,color:P.sub,fontWeight:700,marginBottom:10,letterSpacing:1}}>{PERIOD_LABEL[period]}</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>{items.map(r=>{
+          if(editingId===r.id)return(<div key={r.id} style={{background:P.tag,borderRadius:12,padding:12}}><RoutineFields draft={editDraft} setDraft={setEditDraft}/><div style={{...st.row,gap:8,marginTop:8}}><button style={{...st.btn,background:canSave(editDraft)?P.accent:"#c8bfb5",color:"#fff",flex:1}} onClick={()=>saveEdit(r.id)}>儲存</button><button style={{...st.btn,background:P.tag,color:P.accent,flex:1}} onClick={()=>setEditingId(null)}>取消</button></div></div>);
+          return(<div key={r.id} style={{display:"flex",alignItems:"center",gap:8}}>
+            <div style={{flex:1,display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background:P.card,border:`1px solid ${P.border}`,borderRadius:12}}><span style={{fontSize:20}}>{r.icon}</span><div><div style={{fontSize:14,fontWeight:600}}>{r.label}</div><div style={{fontSize:11,color:P.sub,marginTop:2}}>{scheduleHint(r)}{r.lastDone&&<span style={{marginLeft:8}}>· 上次：{r.lastDone}</span>}</div></div></div>
+            <button onClick={()=>startEdit(r)} style={{...st.btn,background:P.tag,color:P.accent,padding:"8px 11px",fontSize:13}}>✏️</button>
+            <button onClick={()=>deleteRoutine(r.id)} style={{...st.btn,background:"#fbe9e2",color:P.danger,padding:"8px 11px",fontSize:13}}>✕</button></div>);})}</div></div>))}
+  </div></div>}
+
+{/* ==================== 提醒 ==================== */}
+{tab==="alarms"&&<div style={st.sec}>
+  <div style={st.sH}><span style={st.sT}>⏰ 提醒設定</span></div>
+  <div style={st.sB}>
+    <div style={{background:`linear-gradient(135deg,${P.tag},${P.warmGlow})`,borderRadius:10,padding:"10px 14px",fontSize:13,color:P.sub,marginBottom:16,border:`1px solid ${P.border}`}}>⚠️ 提醒需要<strong>瀏覽器通知權限</strong>，且<strong>此頁面必須保持開啟</strong>。</div>
+    <div style={{marginBottom:20}}>
+      <div style={{...st.row,marginBottom:8,flexWrap:"wrap",gap:8}}><input style={{...st.inp,flex:2,minWidth:120}} placeholder="自訂提醒名稱" value={newAlarm.label} onChange={e=>setNewAlarm(a=>({...a,label:e.target.value}))} onKeyDown={e=>e.key==="Enter"&&addAlarm()}/><select style={{...st.inp,flex:1,minWidth:100}} value={newAlarm.type} onChange={e=>setNewAlarm(a=>({...a,type:e.target.value}))}><option value="fixed">單次</option><option value="interval">間隔重複</option></select></div>
+      {newAlarm.type==='fixed'?(<div style={{...st.row,flexWrap:"wrap",gap:8}}><input type="time" style={{...st.inp,flex:1,minWidth:100}} value={newAlarm.time} onChange={e=>setNewAlarm(a=>({...a,time:e.target.value}))}/><button style={{...st.btn,background:P.accent,color:"#fff",whiteSpace:"nowrap"}} onClick={addAlarm}>+ 新增</button></div>
+      ):(<div style={{background:P.card,border:`1px solid ${P.border}`,borderRadius:10,padding:12}}>
+        <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:8}}><span style={{fontSize:13}}>每</span><input type="number" step="0.5" min="0.5" style={{...st.inp,padding:"6px",width:60,textAlign:"center"}} value={newAlarm.interval} onChange={e=>setNewAlarm({...newAlarm,interval:e.target.value})}/><span style={{fontSize:13}}>小時。時段：</span></div>
+        <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><input type="time" style={{...st.inp,padding:"8px",flex:1}} value={newAlarm.start} onChange={e=>setNewAlarm({...newAlarm,start:e.target.value})}/><span style={{fontSize:12,color:P.sub}}>到</span><input type="time" style={{...st.inp,padding:"8px",flex:1}} value={newAlarm.end} onChange={e=>setNewAlarm({...newAlarm,end:e.target.value})}/></div>
+        <button style={{...st.btn,background:P.accent,color:"#fff",width:"100%",padding:"8px"}} onClick={addAlarm}>+ 批次新增</button></div>)}</div>
+
+    <div style={{marginBottom:16}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><div style={{fontSize:12,color:P.sub}}>常用快捷</div><button onClick={()=>setEditPresetsMode(!editPresetsMode)} style={{...st.btn,background:"transparent",color:P.accent,padding:0,fontSize:12}}>{editPresetsMode?"完成":"✏️ 編輯"}</button></div>
+      {!editPresetsMode?(<div style={{display:"flex",flexWrap:"wrap",gap:8}}>{data.alarmPresets.map(p=>(<button key={p.id} onClick={()=>applyPreset(p)} style={{...st.btn,background:P.card,color:P.accent,border:`1px solid ${P.border}`,fontSize:13,padding:"7px 14px"}}>＋ {p.label} <span style={{opacity:0.6,fontSize:11}}>{p.type==='fixed'?p.time:formatIntervalShort(p.interval)}</span></button>))}</div>
+      ):(<div style={{background:P.tag,borderRadius:10,padding:12}}>
+        {data.alarmPresets.map(p=>(<div key={p.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 0",borderBottom:`1px solid ${P.border}`}}><div style={{fontSize:13}}><span style={{fontWeight:700,marginRight:8}}>{p.label}</span><span style={{color:P.sub,fontSize:12}}>{p.type==='fixed'?p.time:`${formatIntervalZh(p.interval)} (${p.start}-${p.end})`}</span></div><button onClick={()=>deletePreset(p.id)} style={{background:"transparent",border:"none",color:P.danger,cursor:"pointer",fontSize:16}}>✕</button></div>))}
+        <div style={{marginTop:12,paddingTop:12}}><div style={{fontSize:12,fontWeight:700,marginBottom:8}}>新增快捷</div>
+          <div style={{...st.row,flexWrap:"wrap",gap:8,marginBottom:8}}><input style={{...st.inp,flex:2,minWidth:100,padding:"8px"}} placeholder="名稱" value={newPreset.label} onChange={e=>setNewPreset({...newPreset,label:e.target.value})}/><select style={{...st.inp,flex:1,minWidth:100,padding:"8px"}} value={newPreset.type} onChange={e=>setNewPreset({...newPreset,type:e.target.value})}><option value="fixed">固定</option><option value="interval">間隔</option></select></div>
+          {newPreset.type==='fixed'?(<div style={{...st.row,gap:8}}><input type="time" style={{...st.inp,flex:1,padding:"8px"}} value={newPreset.time} onChange={e=>setNewPreset({...newPreset,time:e.target.value})}/><button style={{...st.btn,background:P.accent,color:"#fff",padding:"8px 14px"}} onClick={addPreset}>儲存</button></div>
+          ):(<div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontSize:13}}>每</span><input type="number" step="0.5" min="0.5" style={{...st.inp,padding:"6px",width:60,textAlign:"center"}} value={newPreset.interval} onChange={e=>setNewPreset({...newPreset,interval:e.target.value})}/><span style={{fontSize:13}}>小時。時段：</span></div>
+            <div style={{display:"flex",alignItems:"center",gap:6}}><input type="time" style={{...st.inp,padding:"8px",flex:1}} value={newPreset.start} onChange={e=>setNewPreset({...newPreset,start:e.target.value})}/><span style={{fontSize:12,color:P.sub}}>到</span><input type="time" style={{...st.inp,padding:"8px",flex:1}} value={newPreset.end} onChange={e=>setNewPreset({...newPreset,end:e.target.value})}/></div>
+            <button style={{...st.btn,background:P.accent,color:"#fff",width:"100%",padding:"8px"}} onClick={addPreset}>儲存</button></div>)}</div></div>)}</div>
+
+    {(data.alarms||[]).length>0&&<div style={{borderTop:`1px solid ${P.border}`,paddingTop:16}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}><div style={{fontSize:12,color:P.sub}}>今日排定 ({data.alarms.length} 個)</div><button onClick={clearAllAlarms} style={{...st.btn,background:"#fbe9e2",color:P.danger,padding:"4px 10px",fontSize:12}}>🗑️ 清除全部</button></div>
+      {[...(data.alarms||[])].sort((a,b)=>a.time.localeCompare(b.time)).map((a,i)=>(<div key={a.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"11px 0",borderTop:i>0?`1px solid ${P.border}`:"none"}}>
+        <div style={{...st.row,gap:12}}><div style={{fontFamily:"monospace",fontSize:17,color:a.enabled?P.accent:P.sub,fontWeight:700}}>{a.time}</div><div style={{fontSize:14,color:a.enabled?P.text:P.sub}}>{a.label}</div></div>
+        <div style={{...st.row,gap:6}}><button onClick={()=>upd({alarms:data.alarms.map(al=>al.id===a.id?{...al,enabled:!al.enabled}:al)})} style={{...st.btn,background:a.enabled?P.green:P.tag,color:a.enabled?"#fff":P.sub,padding:"5px 12px",fontSize:12,borderRadius:16}}>{a.enabled?"開":"關"}</button><button style={{...st.btn,background:"#fbe9e2",color:P.danger,padding:"5px 10px",fontSize:12}} onClick={()=>upd({alarms:data.alarms.filter(al=>al.id!==a.id)})}>✕</button></div></div>))}</div>}
+  </div></div>}
+
+{/* ==================== 回顧 ==================== */}
+{tab==="stats"&&<div>
+  <div style={st.sec}><div style={st.sB}><div style={{display:"flex",gap:12,justifyContent:"center"}}>
+    <div style={{flex:1,textAlign:"center",padding:"16px 8px",background:`linear-gradient(135deg,${P.reward}15,${P.warmGlow})`,borderRadius:14}}><div style={{fontSize:36,fontWeight:900,color:P.reward,fontFamily:"'Noto Serif TC', serif"}}>{streak>0?`🔥 ${streak}`:"—"}</div><div style={{fontSize:12,color:P.sub,marginTop:4}}>連續天數</div></div>
+    <div style={{flex:1,textAlign:"center",padding:"16px 8px",background:`linear-gradient(135deg,${P.green}15,${P.warmGlow})`,borderRadius:14}}><div style={{fontSize:36,fontWeight:900,color:P.green,fontFamily:"'Noto Serif TC', serif"}}>{data.totalCompleted||0}</div><div style={{fontSize:12,color:P.sub,marginTop:4}}>累計完成</div></div>
+  </div></div></div>
+
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>📊 過去 7 天</span></div>
+    <div style={st.sB}><div style={{display:"flex",gap:6,alignItems:"flex-end",height:120,padding:"0 4px"}}>
+      {last7.map((day,i)=>{const h=day.count>0?Math.max(20,(day.count/maxLast7)*90):4;const isToday=day.date===todayStr();return(
+        <div key={day.date} style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:4}}>
+          <div style={{fontSize:12,fontWeight:700,color:day.count>0?P.green:P.sub}}>{day.count||""}</div>
+          <div style={{width:"100%",height:h,borderRadius:6,background:day.count>0?`linear-gradient(180deg,${P.green},${P.green}90)`:P.tag,transition:"height 0.5s ease",border:isToday?`2px solid ${P.accent}`:"none"}}/>
+          <div style={{fontSize:11,color:isToday?P.accent:P.sub,fontWeight:isToday?700:400}}>{day.weekday}</div></div>);})}
+    </div></div></div>
+
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🏆 今日里程碑</span></div>
+    <div style={st.sB}>{MILESTONES.map((m,i)=>{const reached=completedCount>=m.count;return(
+      <div key={m.count} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 0",borderTop:i>0?`1px solid ${P.border}`:"none",opacity:reached?1:0.4}}>
+        <div style={{fontSize:28,width:44,textAlign:"center",animation:reached?"starPop 0.5s ease-out":"none"}}>{m.emoji}</div>
+        <div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:reached?P.accent:P.sub}}>{m.title}</div><div style={{fontSize:12,color:P.sub}}>{m.msg}</div></div>
+        <div style={{fontSize:13,color:reached?P.green:P.sub,fontWeight:700}}>{reached?"✓":`${m.count} 件`}</div></div>);})}</div></div>
+
+  {/* 🐱 貓咪 & 🏅 徽章 */}
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🐱 我的貓咪夥伴</span></div>
+    <div style={st.sB}><div style={{display:"flex",alignItems:"center",gap:20,marginBottom:16}}>
+      <div style={{fontSize:64,animation:"catIdle 3s ease-in-out infinite"}}>{data.petHappiness>=80?"😻":data.petHappiness>=50?"😺":data.petHappiness>=30?"😿":"🙀"}</div>
+      <div style={{flex:1}}><div style={{fontSize:14,fontWeight:700,color:P.accent,marginBottom:8}}>開心度</div>
+        <div style={{width:"100%",height:12,background:P.tag,borderRadius:6,overflow:"hidden",marginBottom:4}}><div style={{width:`${Math.min(100,data.petHappiness)}%`,height:"100%",background:data.petHappiness>=50?`linear-gradient(90deg,${P.green},#6aaa7a)`:`linear-gradient(90deg,${P.energyLow},${P.energyMid})`,borderRadius:6,transition:"width 0.5s ease"}}/></div>
+        <div style={{fontSize:12,color:P.sub}}>{data.petHappiness}/100</div>
+        <div style={{marginTop:8,display:"flex",gap:8,alignItems:"center"}}><span style={{fontSize:13,color:P.sub}}>🐟 零食：{data.petTreats}</span>
+          <button onClick={feedPet} disabled={data.petTreats<=0} style={{...st.btn,padding:"6px 14px",fontSize:13,background:data.petTreats>0?P.accent:P.tag,color:data.petTreats>0?"#fff":P.sub,borderRadius:20}}>餵食</button></div></div></div>
+      <div style={{fontSize:13,color:P.sub,background:P.tag,padding:"10px 14px",borderRadius:10,lineHeight:1.5}}>完成任務獲得🐟零食，完成專注計時獲得 2 個！</div></div></div>
+
+  <div style={st.sec}><div style={st.sH}><span style={st.sT}>🏅 冒險足跡</span><span style={{fontSize:12,color:P.sub}}>{(data.unlockedBadges||[]).length}/{BADGES.length}</span></div>
+    <div style={st.sB}><div style={{display:"grid",gridTemplateColumns:"repeat(3, 1fr)",gap:10}}>
+      {BADGES.map(badge=>{const unlocked=(data.unlockedBadges||[]).includes(badge.id);return(
+        <div key={badge.id} style={{display:"flex",flexDirection:"column",alignItems:"center",padding:"14px 8px",background:unlocked?P.warmGlow:P.tag,borderRadius:14,border:`2px solid ${unlocked?P.orange+'60':"transparent"}`,opacity:unlocked?1:0.4,animation:unlocked?"badgeGlow 3s ease-in-out infinite":"none"}}>
+          <div style={{fontSize:32,marginBottom:6}}>{unlocked?badge.icon:"🔒"}</div>
+          <div style={{fontSize:12,fontWeight:700,color:unlocked?P.accent:P.sub,textAlign:"center"}}>{badge.title}</div>
+          <div style={{fontSize:10,color:P.sub,textAlign:"center",marginTop:2}}>{badge.desc}</div></div>);})}</div></div></div>
+
+  {data.moodLog.length>0&&<div style={st.sec}><div style={st.sH}><span style={st.sT}>💭 近期心情</span></div>
+    <div style={st.sB}><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{data.moodLog.slice(-14).map((entry,i)=>(<div key={i} title={`${entry.date} ${entry.time}\n${entry.note||""}`} style={{width:36,height:36,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,background:P.tag,borderRadius:8}}>{entry.mood}</div>))}</div></div></div>}
+</div>}
+
+<div style={{textAlign:"center",marginTop:32,fontSize:13,color:P.sub,fontFamily:"'Noto Serif TC', serif",letterSpacing:2}}>一次只需要做好一件事 ✦</div>
+```
+
+  </div>);
+};
+
+ReactDOM.createRoot(document.getElementById(‘root’)).render(<App/>);
+</script>
+
+</body>
+</html>
